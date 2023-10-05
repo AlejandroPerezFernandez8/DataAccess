@@ -44,22 +44,75 @@ public class GestorJaxb {
 
     public void insertarEmpleado(Empleados listaempleados) {
         
-        System.out.println("______INSERTAR EMPLEADO________");
+        System.out.println("---------INSERTAR EMPLEADO------------");
         
+        //Primero verificamos que el empleado no existe 
+        int id = LD.leer_entero("Introduszca el id");
+        if (buscarEmpleado(listaempleados, id) != null){
+            System.out.println("El empleado ya existe");
+            return;
+        }
+        
+        //INSERTAMOS EL EMPLEADO
         listaempleados.getEmpleado().add(new Empleado(
-                BigInteger.valueOf(LD.leer_entero("Introduzca el ID :")), 
+                BigInteger.valueOf(id), 
              LD.leer_String("Introduzca el nombre:"),
                 BigInteger.valueOf(LD.leer_entero("Introduzca el Deep :")),  
              BigDecimal.valueOf(LD.leer_float("Introduzca el Salario :"))
         ));
     }
 
+    
+    
     public void modificarDatos(Empleados listaempleados) {
         
+        System.out.println("---------MODIFICAR EMPLEADO------------");
+        int id = LD.leer_entero("Introduszca el id");
+        Empleado empleadoModificar = buscarEmpleado(listaempleados, id);
+        
+        if (empleadoModificar == null){
+            System.out.println("No existe el empleado");
+            return;
+        }
+        
+        empleadoModificar.setNombre(LD.leer_String("Nuevo Nombre"));
+        empleadoModificar.setDep(BigInteger.valueOf(LD.leer_entero("Intrduce el nuevo DEEP")));
+        empleadoModificar.setSalario(BigDecimal.valueOf(LD.leer_float("Introduzca el nuevo salario")));
+        
+        System.out.println("Empleado modificado correctamente");
     }
 
+    
+    
+    
+    
+    
     public void borrarEmpleado(Empleados listaempleados) {
+        System.out.println("---------BORRAR EMPLEADO------------");
+        int id = LD.leer_entero("Introduszca el id");
+        Empleado empleadoBorrar = buscarEmpleado(listaempleados, id);
+        
+        if (empleadoBorrar == null){
+            System.out.println("No existe el empleado");
+            return;
+        }
+        
+        listaempleados.getEmpleado().remove(empleadoBorrar);
+        System.out.println("Empleado Borrado");
         
     }
     
+   
+    
+    //SE BUSCA LA COINCIDENCIA DE IDs EN LOS EMPLEADOS
+    public Empleado buscarEmpleado(Empleados listaEmpleados , int id) {
+       Empleado empleadoBuscar = null; 
+        
+       for (Empleado empleado : listaEmpleados.getEmpleado()) {
+           if (id == empleado.getId().intValue()) {
+               empleadoBuscar = empleado;
+           }
+        }
+        return empleadoBuscar;
+    }
 }
