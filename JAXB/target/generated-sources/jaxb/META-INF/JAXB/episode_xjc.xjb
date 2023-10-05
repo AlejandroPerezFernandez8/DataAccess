@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jaxb:bindings version="3.0" xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb">
+  <!--
+
+Este archivo ha sido generado por Eclipse Implementation of JAXB v3.0.0 
+Visite https://eclipse-ee4j.github.io/jaxb-ri 
+Todas las modificaciones realizadas en este archivo se perderán si se vuelve a compilar el esquema de origen. 
+Generado el: 2023.10.03 a las 05:29:22 PM CEST 
+
+  -->
+  <jaxb:bindings scd="x-schema::">
+    <jaxb:schemaBindings map="false">
+      <jaxb:package name="generated"/>
+    </jaxb:schemaBindings>
+    <jaxb:bindings scd="empleados">
+      <jaxb:class ref="generated.Empleados"/>
+    </jaxb:bindings>
+    <jaxb:bindings scd="empleado">
+      <jaxb:class ref="generated.Empleado"/>
+    </jaxb:bindings>
+  </jaxb:bindings>
+</jaxb:bindings>
+
