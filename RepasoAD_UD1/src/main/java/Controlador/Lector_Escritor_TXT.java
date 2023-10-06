@@ -37,7 +37,5 @@ public class Lector_Escritor_TXT {
         
         FicheroEscritor.write(datos);
         FicheroEscritor.close();
-        
     }
-    
 }

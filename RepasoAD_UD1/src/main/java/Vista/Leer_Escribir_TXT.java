@@ -16,8 +16,6 @@ import java.io.IOException;
 public class Leer_Escribir_TXT {
     public static void main(String[] args) {
         String datos = "";
-        
-        
         try {
             
             File fichero = new File("./src/main/resources/ficherostxt/datos.txt");
@@ -26,12 +24,8 @@ public class Leer_Escribir_TXT {
             datos = Lector_Escritor_TXT.leerDatos(fichero);
             Lector_Escritor_TXT.escribirFichero(ficheronuevo,datos);
             
-           
-            
-            
         } catch (IOException ex) {
             System.out.println("IO EXCEPTION");
         }
-        
     }
 }
