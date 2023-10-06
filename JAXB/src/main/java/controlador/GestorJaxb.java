@@ -29,9 +29,7 @@ public class GestorJaxb {
         System.out.println("[4]Eliminar Empleado");
         System.out.println("[5]Salir");
         
-        eleccion = LD.leer_entero("");
-        
-        return eleccion;
+        return LD.leer_entero("");
     }
 
     public void visualizarTodos(Empleados listaempleados) {
