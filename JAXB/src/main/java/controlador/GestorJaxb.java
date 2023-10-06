@@ -81,9 +81,6 @@ public class GestorJaxb {
         
         System.out.println("Empleado modificado correctamente");
     }
-
-    
-    
     
     
     
