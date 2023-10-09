@@ -24,6 +24,10 @@ public class ConversorDomToRaf {
     
     public void convertirfichero(){
         
+        //SI EL RAF EXISTE LO BORRAMOS PORQUE SOLO LO QUEREMOS COMO SALIDA, NO QUEREMOS CONSERVARLO EN CADA EJECUCION
+            File ficheroDatos = new File("./src/main/resources/datosSalida.dat");
+            ficheroDatos.delete();
+        
         try(
                 RandomAccessFile raf = new RandomAccessFile(new File("./src/main/resources/datosSalida.dat"), "rw")
             ) {
@@ -33,7 +37,7 @@ public class ConversorDomToRaf {
                 System.out.println("El fichero no existe");
                 return;
             }
-            
+                
             //DECLARACION DOM
             DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbfactory.newDocumentBuilder();
@@ -78,7 +82,6 @@ public class ConversorDomToRaf {
         //EL RAF SE COMPONDRA DE :
             //ID_vaca (10) , ID_matadero(10),raza(10),sexo(1),edad(4) = 65
         
-        
         //NOS POSICIONAMOS EN LA ULTIMA POSICION
         raf.seek(raf.length());
         
@@ -100,8 +103,7 @@ public class ConversorDomToRaf {
         //EDAD
         raf.writeInt(edad);
         //Sexo
-        raf.writeChar(sexo);
-
+        raf.writeChar(sexo);  
     }
 
     
@@ -109,7 +111,7 @@ public class ConversorDomToRaf {
         String ID_matadero = "";
         if(vaca.hasAttributes()){
             for (int i = 0; i < vaca.getAttributes().getLength(); i++) {
-                vaca.getAttributes().item(i).getTextContent();
+                ID_matadero = vaca.getAttributes().item(i).getNodeValue();
             }
         }
         return ID_matadero;
