@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Ejercicio1;
+package vista;
 
 import Controlador.LectorDatos;
 import Modelo.info;
@@ -18,21 +18,18 @@ import java.util.logging.Logger;
  *
  * @author alejandro.perezferna
  */
-public class main {
+public class Ejercicio1 {
     static File ficheroInicio = new File("./src/main/resources/Ejercicio1/");
     static LectorDatos LD = new LectorDatos();
     public static void main(String[] args) {
+        new File(ficheroInicio+"info.dat").delete();
         //SE RECORRERA TODA LA CARPETA EJERCICIO1 DE RESOURCES
         recorrerListado(ficheroInicio);
        
-        if (LD.leer_entero("FICHERO info.dat ESCRITO. ¿desesa mostrarlo?[1-SI][2-NO]") == 1) {
-            mostrarRaf();
-        }
-        new File(ficheroInicio+"info.dat").deleteOnExit();
+        
+        
     }
-    
-    
-    
+
     public static void recorrerListado(File fichero){
         
         File[] listadoFicheros = fichero.listFiles();
@@ -54,7 +51,7 @@ public class main {
     public static void EscribirObjeto(info info){
         //ESCRIBIREMOS LOS DATOS EN EJERCICIO1/info.dat
         try (
-                RandomAccessFile raf = new RandomAccessFile(ficheroInicio+"info.dat","rw");
+                RandomAccessFile raf = new RandomAccessFile(ficheroInicio+"/info.dat","rw");
             ){
                StringBuffer cadena;
                raf.seek(raf.length());
@@ -68,9 +65,9 @@ public class main {
                raf.writeChars(cadena.toString());
                             
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ejercicio1.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ejercicio1.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
 
@@ -91,9 +88,9 @@ public class main {
              }
              
         }   catch (FileNotFoundException ex) {
-            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ejercicio1.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ejercicio1.class.getName()).log(Level.SEVERE, null, ex);
         } 
     
     
