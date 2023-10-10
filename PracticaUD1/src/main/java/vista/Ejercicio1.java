@@ -8,6 +8,7 @@ import Controlador.LectorDatos;
 import Modelo.info;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.logging.Level;
@@ -22,7 +23,7 @@ public class Ejercicio1 {
     static File ficheroInicio = new File("./src/main/resources/Ejercicio1/");
     static LectorDatos LD = new LectorDatos();
     public static void main(String[] args) {
-        new File(ficheroInicio+"info.dat").delete();
+        new File(ficheroInicio+"/info.dat").delete();
         //SE RECORRERA TODA LA CARPETA EJERCICIO1 DE RESOURCES
         recorrerListado(ficheroInicio);
        
@@ -31,15 +32,17 @@ public class Ejercicio1 {
     }
 
     public static void recorrerListado(File fichero){
-        //PARA USAR UN FILTRO LO ESCRIBIREMOS TODO MENOS LOS FICHEROS .RTF (HAY UNO EN LA CARPETA DATOS)
+        //PARA USAR UN FILTRO LO ESCRIBIREMOS TODO MENOS LA CARPETA QUE SE LLAME NO COPIAR
+        FilenameFilter filtro = (dir, name) -> {
+            return !name.contains("NoCopiar");
+        };
+        
  
-        File[] listadoFicheros = fichero.listFiles();
+        File[] listadoFicheros = fichero.listFiles(filtro);
         
         for (File ficheroencontrado : listadoFicheros) {
             info info;
-          
-            if (ficheroencontrado.isDirectory()) {
-                
+            if (ficheroencontrado.isDirectory()) {        
                 info = new info(ficheroencontrado.getName(),"CARPETA");
                 recorrerListado(ficheroencontrado);
                 EscribirObjeto(info);
