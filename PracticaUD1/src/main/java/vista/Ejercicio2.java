@@ -32,6 +32,8 @@ public class Ejercicio2 {
         }
         
     }
+    
+    
     private static void mostrarficheros(String modo) {
         char [] aux = new char[60];
         String ficherofinal;
@@ -59,10 +61,6 @@ public class Ejercicio2 {
                      case "t" -> {System.out.println(ficherofinal);}
                      default -> throw new AssertionError();
                  }
-                 
-                 
-                 
-                 
              }
              
         }   catch (FileNotFoundException ex) {

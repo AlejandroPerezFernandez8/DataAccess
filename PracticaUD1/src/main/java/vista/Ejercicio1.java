@@ -31,11 +31,13 @@ public class Ejercicio1 {
     }
 
     public static void recorrerListado(File fichero){
-        
+        //PARA USAR UN FILTRO LO ESCRIBIREMOS TODO MENOS LOS FICHEROS .RTF (HAY UNO EN LA CARPETA DATOS)
+ 
         File[] listadoFicheros = fichero.listFiles();
         
         for (File ficheroencontrado : listadoFicheros) {
             info info;
+          
             if (ficheroencontrado.isDirectory()) {
                 
                 info = new info(ficheroencontrado.getName(),"CARPETA");
@@ -49,7 +51,7 @@ public class Ejercicio1 {
     }
     
     public static void EscribirObjeto(info info){
-        //ESCRIBIREMOS LOS DATOS EN EJERCICIO1/info.dat
+        //ESCRIBIREMOS LOS DATOS EN EJERCICIO1/info.dat       
         try (
                 RandomAccessFile raf = new RandomAccessFile(ficheroInicio+"/info.dat","rw");
             ){
