@@ -8,6 +8,17 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -15,7 +26,8 @@ import java.io.IOException;
  */
 public class controladorEjercicio3 {
     
-     public void escribirXML(){
+    //ESCRITURA DEL XML
+    public void escribirXML(){
          File ficheroxml =  new File("./src/main/resources/Ejercicio3/Vacas.xml");
          
          if(ficheroxml.exists()){ficheroxml.delete();}
@@ -53,11 +65,55 @@ public class controladorEjercicio3 {
      }
     
     
-    
-    
-    
-    
-    
-    
-    
+    //PASAR DEL XML A UN RAF
+    public void escribirRAF(RandomAccessFile raf,File ficheroxml) throws IOException{
+        try {
+            //SE ESCRIBE ID_Vaca, raza,sexo,edad,ID_matadero
+            
+            StringBuffer aux;
+            
+            //DECLARACION DOM
+            DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbfactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(ficheroxml);
+            
+            raf.seek(0);
+            
+            NodeList listaVacas = doc.getElementsByTagName("vaca");
+            
+            for (int i = 0; i < listaVacas.getLength(); i++) {
+               Node nodeVaca = listaVacas.item(i);
+                
+               Element elementoVaca = (Element) nodeVaca;
+               
+               //ESCRIBIMOS EL ID VACA
+               aux = new StringBuffer(elementoVaca.getAttributes().item(0).getTextContent());
+               aux.setLength(10);
+               raf.writeChars(aux.toString());
+               
+               //ESCRIBIMOS LA RAZA
+               aux = new StringBuffer(elementoVaca.getElementsByTagName("Raza").item(0).getTextContent());
+               aux.setLength(10);
+               raf.writeChars(aux.toString()); 
+             
+               //ESCRIBIMOS EL SEXO
+               raf.writeChar(elementoVaca.getElementsByTagName("Sexo").item(0).getTextContent().charAt(0));
+               
+               //ESCRIBIMOS LA EDAD
+               raf.writeInt(Integer.parseInt(elementoVaca.getElementsByTagName("Edad").item(0).getTextContent().trim()));
+               
+               
+               //ESCRIBIMOS EL ID DEL MATADERO
+               aux = new StringBuffer(elementoVaca.getAttributes().item(1).getTextContent());
+               aux.setLength(10);
+               raf.writeChars(aux.toString()); 
+                
+            }
+        } catch (ParserConfigurationException | SAXException ex) {
+            Logger.getLogger(controladorEjercicio3.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }
+
 }
