@@ -87,7 +87,7 @@ public class controladorEjercicio3 {
                Element elementoVaca = (Element) nodeVaca;
                
                //ESCRIBIMOS EL ID VACA
-               aux = new StringBuffer(elementoVaca.getAttributes().item(0).getTextContent());
+               aux = new StringBuffer(elementoVaca.getAttributes().item(1).getTextContent());
                aux.setLength(10);
                raf.writeChars(aux.toString());
                
@@ -104,7 +104,7 @@ public class controladorEjercicio3 {
                
                
                //ESCRIBIMOS EL ID DEL MATADERO
-               aux = new StringBuffer(elementoVaca.getAttributes().item(1).getTextContent());
+               aux = new StringBuffer(elementoVaca.getAttributes().item(0).getTextContent());
                aux.setLength(10);
                raf.writeChars(aux.toString()); 
                 

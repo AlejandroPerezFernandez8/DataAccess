@@ -4,11 +4,13 @@
  */
 package Modelo;
 
+import java.io.Serializable;
+
 /**
  *
  * @author alejandro.perezferna
  */
-public class info {
+public class info implements Serializable{
     String nombre,tipo;
 
     public info(String nombre, String tipo) {
@@ -30,6 +32,11 @@ public class info {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    @Override
+    public String toString() {
+        return "info{" + "nombre=" + nombre + ", tipo=" + tipo + '}';
     }
     
     

@@ -4,15 +4,18 @@
  */
 package vista;
 
-import Controlador.LectorDatos;
 import Modelo.info;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 
 /**
@@ -21,83 +24,67 @@ import java.util.logging.Logger;
  */
 public class Ejercicio1 {
     static File ficheroInicio = new File("./src/main/resources/Ejercicio1/");
-    static LectorDatos LD = new LectorDatos();
+    static File ficheroObjetos = new File("./src/main/resources/Ejercicio1/info.dat");
     public static void main(String[] args) {
-        new File(ficheroInicio+"/info.dat").delete();
-        //SE RECORRERA TODA LA CARPETA EJERCICIO1 DE RESOURCES
-        recorrerListado(ficheroInicio);
-       
-        
-        
-    }
-
-    public static void recorrerListado(File fichero){
-        //PARA USAR UN FILTRO LO ESCRIBIREMOS TODO MENOS LA CARPETA QUE SE LLAME NO COPIAR
-        FilenameFilter filtro = (dir, name) -> {
-            return !name.contains("NoCopiar");
-        };
-        
- 
-        File[] listadoFicheros = fichero.listFiles(filtro);
-        
-        for (File ficheroencontrado : listadoFicheros) {
-            info info;
-            if (ficheroencontrado.isDirectory()) {        
-                info = new info(ficheroencontrado.getName(),"CARPETA");
-                recorrerListado(ficheroencontrado);
-                EscribirObjeto(info);
-            }else{
-                info = new info(ficheroencontrado.getName(),"FICHERO");
-                EscribirObjeto(info);
-            }
-        }
-    }
-    
-    public static void EscribirObjeto(info info){
-        //ESCRIBIREMOS LOS DATOS EN EJERCICIO1/info.dat       
-        try (
-                RandomAccessFile raf = new RandomAccessFile(ficheroInicio+"/info.dat","rw");
-            ){
-               StringBuffer cadena;
-               raf.seek(raf.length());
-               if (info.getTipo().equalsIgnoreCase("CARPETA")) {
-                   cadena = new StringBuffer("[CARPETA] " + info.getNombre());
-               }else{
-                   cadena = new StringBuffer("[FICHERO] " + info.getNombre());
-               }
-               
-               cadena.setLength(60);
-               raf.writeChars(cadena.toString());
-                            
+        ObjectInputStream x = null;
+        try {
+            ficheroObjetos.delete();
+            //SE RECORRERA TODA LA CARPETA EJERCICIO1 DE RESOURCES
+            recorrerListado(ficheroInicio);
+         
+            x = new ObjectInputStream(new FileInputStream (ficheroObjetos));
+            
+            System.out.println(x.readObject().getClass());
+            
+            
+            
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Ejercicio1.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Ejercicio1.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Ejercicio1.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                x.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Ejercicio1.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }
 
-    private static void mostrarRaf() {
-        char [] aux = new char[60];
-        String ficherofinal;
+        public static void recorrerListado(File fichero) {
+        FilenameFilter filtro = (dir, name) -> !name.contains("NoCopiar");
+
+        File[] listadoFicheros = fichero.listFiles(filtro);
         
-         try (
-                RandomAccessFile raf = new RandomAccessFile(ficheroInicio+"info.dat","r");
-            ){
-            raf.seek(0);
-             while (raf.getFilePointer() != raf.length()) {                 
-                 for (int i = 0; i < aux.length; i++) {
-                     aux[i] = raf.readChar();
-                 }
-                 ficherofinal = new String(aux);
-                 System.out.println(ficherofinal);
-             }
-             
-        }   catch (FileNotFoundException ex) {
-            Logger.getLogger(Ejercicio1.class.getName()).log(Level.SEVERE, null, ex);
+        try(
+                ObjectOutputStream OIS = new ObjectOutputStream(new FileOutputStream(ficheroObjetos,true));
+           ){
+            for (File ficheroEncontrado : listadoFicheros) {
+                info info;
+                if (ficheroEncontrado.isDirectory()) {
+                    info = new info(ficheroEncontrado.getName(), "CARPETA");
+                    recorrerListado(ficheroEncontrado);
+                    System.out.println(info.toString());
+                    OIS.writeObject(info);
+                } else {
+                    info = new info(ficheroEncontrado.getName(), "FICHERO");
+                    System.out.println(info.toString());
+                    OIS.writeObject(info);
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            System.out.println("FILE NOT FOUND");
         } catch (IOException ex) {
-            Logger.getLogger(Ejercicio1.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-    
-    
+            System.out.println("IO EXCEPTION");
+        }
     }
+        
+        
+       
+
+
 }
+    

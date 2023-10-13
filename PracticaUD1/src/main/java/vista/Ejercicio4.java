@@ -6,12 +6,6 @@ package vista;
 
 import Controlador.controladorEjercicio4;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author Alejandro.perezferna
@@ -22,6 +16,7 @@ public class Ejercicio4 {
         
         controladorEjercicio4 controlador = new controladorEjercicio4();
         File ficheroRAF = new File("./src/main/resources/Ejercicio3/Vacas.dat");
+        
         boolean salir = false;
         
         if(!ficheroRAF.exists()){
@@ -29,34 +24,19 @@ public class Ejercicio4 {
             return;
         }
         
-        try(
-                RandomAccessFile raf = new RandomAccessFile(ficheroRAF,"rw");
-            ) {
-            
-            while (salir == false) {                
-                switch (controlador.menu()) {
-                    case 1 -> {controlador.leerTodos(raf);}//Consultar todos los registros
-                    case 2 -> {}
-                    case 3 -> {}
-                    case 4 -> {}
-                    case 5 -> {}
-                    case 6 -> {}
-                    case 10 ->{salir = true;}
-                    default -> System.out.println("Opcion incorrecta");
-                }
-            }
-            
-            
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Ejercicio4.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Ejercicio4.class.getName()).log(Level.SEVERE, null, ex);
-        } 
         
+            
+        while (salir == false) {                
+            switch (controlador.menu()) {
+                case 1 -> {controlador.leerTodos(new File("./src/main/resources/Ejercicio3/Vacas.dat"));}//Consultar todos los registros
+                case 2 -> {controlador.insertar(new File("./src/main/resources/Ejercicio3/Vacas.dat"));}//Insertar 1 registro
+                case 3 -> {controlador.borrar(new File("./src/main/resources/Ejercicio3/Vacas.dat"),new File("./src/main/resources/Ejercicio4/raftmp.dat"));}//Borrar 1 registro
+                case 5 -> {controlador.modificarID(new File("./src/main/resources/Ejercicio3/Vacas.dat"));}
+                case 6 -> {controlador.modificarFK(new File("./src/main/resources/Ejercicio3/Vacas.dat"));}
+                case 10 ->{salir = true;}
+                default -> System.out.println("Opcion incorrecta");
+            }
+        }
     }
-    
-    
-    
-    
-    
+
 }
