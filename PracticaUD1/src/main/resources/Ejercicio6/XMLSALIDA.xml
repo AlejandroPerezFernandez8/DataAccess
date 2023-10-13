@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Mataderos>
+    <matadero ID_matadero="mat_000001">
+        <vaca>vac_000001</vaca>
+        <vaca>vac_000003</vaca>
+    </matadero>
+    <matadero ID_matadero="mat_000002">
+        <vaca>vac_000002</vaca>
+    </matadero>
+</Mataderos>

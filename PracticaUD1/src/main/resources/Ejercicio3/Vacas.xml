@@ -1,1 +1,17 @@
-<Vacas><vaca id_vaca="vac_000001" id_matadero="mat_000001" ><Raza>Raza1</Raza><Sexo>M</Sexo><Edad>10</Edad></vaca><vaca id_vaca="vac_000002" id_matadero="mat_000002" ><Raza>Raza1</Raza><Sexo>F</Sexo><Edad>3</Edad></vaca><vaca id_vaca="vac_000003" id_matadero="mat_000001" ><Raza>Raza3</Raza><Sexo>M</Sexo><Edad>5</Edad></vaca></Vacas>
+<Vacas>
+    <vaca id_vaca="vac_000001" id_matadero="mat_000001" >
+        <Raza>Raza1</Raza>
+        <Sexo>M</Sexo>
+        <Edad>10</Edad>
+    </vaca>
+    <vaca id_vaca="vac_000002" id_matadero="mat_000002" >
+        <Raza>Raza1</Raza>
+        <Sexo>F</Sexo>
+        <Edad>3</Edad>
+    </vaca>
+    <vaca id_vaca="vac_000003" id_matadero="mat_000001" >
+        <Raza>Raza3</Raza>
+        <Sexo>M</Sexo>
+        <Edad>5</Edad>
+    </vaca>
+</Vacas>

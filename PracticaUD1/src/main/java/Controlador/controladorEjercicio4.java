@@ -5,7 +5,6 @@
 package Controlador;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.logging.Level;
@@ -284,7 +283,7 @@ public class controladorEjercicio4 {
             String comprobarFK;
             
             
-            //ESCRIBIMOS EL ID MATADERO VACA
+            //ESCRIBIMOS EL ID MATADERO
             aux = new StringBuffer(LD.leer_String("Introduce el ID del matadero"));
             aux.setLength(10);
             
@@ -305,11 +304,7 @@ public class controladorEjercicio4 {
                     raf.writeInt(0);
                     raf.skipBytes(20);
                 }
-                
-                
             }
-            
-            
         } catch (IOException ex) {
             System.out.println("IO EXCEPTION");
         } 
