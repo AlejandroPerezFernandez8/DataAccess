@@ -12,4 +12,11 @@
         <exec.mainClass>UD2_ProyectoBase</exec.mainClass>
     </properties>
     <name>UD2_Practica</name>
+    <dependencies>
+        <dependency>
+            <groupId>com.toedter</groupId>
+            <artifactId>jcalendar</artifactId>
+            <version>1.4</version>
+        </dependency>
+    </dependencies>
 </project>
