@@ -8,8 +8,8 @@ public class MySQLDAOFactory extends DAOFactory {
 
     final static String user = "root";
     final static String password = "root";
-    final static String BD = ""; //Indica aqui la BD 
-    final static String IP = ""; //Indica aqui la IP 
+    final static String BD = "ejemplo"; //Indica aqui la BD 
+    final static String IP = "192.168.56.117"; //Indica aqui la IP 
     final static String url = "jdbc:mysql://" + IP + ":3306/" + BD;
 
     static BasicConnectionPool bcp;
@@ -44,5 +44,7 @@ public class MySQLDAOFactory extends DAOFactory {
         bcp.shutdown();
     }
    
+    //IMPLEMENTACION DE METODOS ABSTRACTOS
+    
 
 }

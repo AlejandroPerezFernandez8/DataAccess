@@ -30,4 +30,6 @@ public abstract class DAOFactory {
 		// TODO Auto-generated method stub		
 	}
 
+        //AÑADIR METODOS ABTRACTOS PARA TENER LOS DAO
+        
 }

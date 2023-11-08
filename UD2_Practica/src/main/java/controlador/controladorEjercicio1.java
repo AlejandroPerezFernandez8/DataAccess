@@ -20,11 +20,11 @@ public class controladorEjercicio1 {
     }
     
     public static void iniciarFactory(){
-    
+        
     }
     
     public static void cerrarFactory(){
-    
+        
     }
     
     
