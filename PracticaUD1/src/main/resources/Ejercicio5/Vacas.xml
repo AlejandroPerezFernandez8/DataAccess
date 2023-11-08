@@ -1,0 +1,10 @@
+<Mataderos>
+  <Matadero id_matadero="mat_000001">
+    <Vaca>vac_000001</Vaca>
+    <Vaca>vac_000003</Vaca>
+    <Vaca>vac_000004</Vaca>
+  </Matadero>
+  <Matadero id_matadero="mat_000002">
+    <Vaca>vac_000002</Vaca>
+  </Matadero>
+</Mataderos>

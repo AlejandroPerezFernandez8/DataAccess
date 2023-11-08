@@ -1,0 +1,17 @@
+<clase>
+    <alumno id ="1">
+        <nombre>Alex</nombre>
+        <apellidos>perez</apellidos>
+        <media>9.2</media>
+    </alumno>
+    <alumno id ="2">
+        <nombre>Manuel</nombre>
+        <apellidos>Jimenez</apellidos>
+        <media>4.7</media>
+    </alumno>
+    <alumno id ="3">
+        <nombre>Juan</nombre>
+        <apellidos>Lopez</apellidos>
+        <media>6.8</media>
+    </alumno>
+</clase>
