@@ -1,85 +1,91 @@
-drop database if exists ejemplo;
-create schema ejemplo;
+drop database if exists practicaud2;
+create schema practicaud2;
 
-Use ejemplo;
+Use practicaud2;
 
-create table departamentos (
-  dept_no tinyint(2)not null primary key,
-  dnombre varchar(15),
-  loc varchar(15)
+create table productos (
+  idproducto varchar(6) not null primary key,
+  nomproducto varchar(25) not null unique,
+  stock int not null default 0,
+  precio float(8,2)
 );
 
-create table empleados (
-  emp_no smallint(4) unsigned not null primary key,
-  apellido varchar(10),
-  oficio varchar(10),
-  dir smallint,
-  fecha_alt date,
+create table cliente (
+  idcliente varchar(10) not null primary key,
+  nombrecli varchar(20),
+  apellidocli varchar (25),
+  dircli  varchar(30)
+);
+
+create table empleado (
+  idempleado varchar(10) not null primary key,
+  nombreemp varchar(20),
   salario float(6,2),
-  comision float(6,2),
-  dept_no tinyint(2)not null references departamentos(dept_no)
+  incentivo float(6,2),
+  operativas int
 );
 
-create table aportaciones (
-  numemp smallint(4) unsigned not null primary key,
-  cantidad float(6,2)
+create table factura (
+  numfactura varchar(8)  not null primary key,
+  idcliente varchar(10) not null references cliente (idcliente),
+  idempleado varchar(10) not null references empleado (idempleado),
+  fecha datetime,
+  cobrada boolean,
+  iva float (4,2),
+  constraint `fk_idcliente` FOREIGN KEY (`idcliente` ) REFERENCES `practicaud2`.`cliente` (`idcliente` ),
+  constraint `fk_idempleado` FOREIGN KEY (`idempleado`) REFERENCES `practicaud2`.`empleado` (`idempleado`)
 );
 
-ALTER TABLE `ejemplo`.`empleados` 
 
-  ADD CONSTRAINT `fk_dept_no`
+create table detalle ( 
+  numfactura varchar(8) not null references factura(numfactura),
+  numdetalle smallint(4) unsigned not null, 
+  idproducto varchar(25) references productos(idproducto),
+  cantidad int,
+  precio float (8,2), 
+  primary key (numfactura,numdetalle),
+  constraint `fk_idproducto` FOREIGN KEY (`idproducto` ) REFERENCES `practicaud2`.`productos` (`idproducto` ),
+  constraint `fk_numfactura` FOREIGN KEY (`numfactura` ) REFERENCES `practicaud2`.`factura` (`numfactura` )
+);
 
-  FOREIGN KEY (`dept_no` )
+create table historicofacturadoporcliente (
+    idcliente varchar(10) not null primary key,
+    nomapecli varchar(45) not null unique,
+    importefacturado float (8,2),
+    observaciones varchar(600)
+);
 
-  REFERENCES `ejemplo`.`departamentos` (`dept_no` )
+insert into productos values 
+('A001','ProductoA1',10,3.5),
+('A002','ProductoA2',13,4),
+('B001','ProductoB1',30,3.7),
+('A003','ProductoA3',40,1.5),
+('A004','ProductoA4',16,2.5),
+('B002','ProductoB3',4,3),
+('C001','ProductoC1',2,2);
 
-  ON DELETE NO ACTION
+insert into cliente values ('C001','José','Alvariza','C/Ourense , 3 4ºD'),
+('C002','Alma','Santos','C/Lugo , 123 1ºF'),
+('C003','Tania','Pedrosa','C/Pontevedra , 5 bajo');
 
-  ON UPDATE NO ACTION
-
-, ADD INDEX `fk_dept_no` (`dept_no` ASC) ;
-
-insert into departamentos values 
-(10,'Contabilidad','A Coruña'),
-(20,'I+D','Santiago'),
-(30,'Ventas','Ferrol'),
-(40,'Produccion','As pontes');
-
-
-insert into empleados values 
-(7396,'Garcia','Adminis.',7902,'2014-02-01',800,null,20),
-(7499,'Velazquez','Vendedor',7698,'2012-02-20',1600,300.00,30),
-(7521,'Martinez','Vendedor',7698,'2015-02-22',1250,500.00,30),
-(7566,'Nuñez','Director',7839,'2011-03-02',2975,null,20),
-(7654,'Martin','Vendedor',7698,'2011-09-28',1250,1400,30),
-(7698,'Fernandez','Director',7839,'2012-04-11',2850,null,30),
-(7782,'Serantes','Director',7839,'2014-09-06',2450,null,10),
-(7788,'Brion','Analista',7566,'2015-01-05',3000,null,20),
-(7839,'Maroto','Presidente',null,'2011-09-28',5000,null,10),
-(7844,'Diaz','Vendedor',7698,'2012-10-11',1500,0.00,30),
-(7876,'Caballero','Adminis.',7788,'2013-09-16',1100,null,20),
-(7900,'Vazquez','Adminis.',7698,'2014-09-22',950,null,30),
-(7902,'Meizoso','Analista',7566,'2012-09-27',3000,null,20),
-(7934,'Teira','Adminis.',7782,'2013-09-18',1300,null,10);
-
+insert into empleado values ('E001','Jupiter',1000.0,0.491,3),
+('E002','Saturno',800.0,null,0),
+('E003','Marte',1200.0,null,0);
 
 
--- --------------------------------------------------------------------------------
--- Routine DDL
--- --------------------------------------------------------------------------------
-DELIMITER $$
+/* 14.5, 23,5, 11,1 */
+insert into factura values ('F001-21','C002','E001','2022-10-18',false,21),
+('F002-21','C002','E001','2022-10-18',true,10),
+('F003-21','C003','E001','2022-10-18',false,21);
 
-CREATE PROCEDURE `ejemplo`.`cuenta` (OUT salida int,IN  valor int)
-BEGIN
- select count(*)  into salida from empleados where dept_no=valor;
-END$$
 
--- --------------------------------------------------------------------------------
--- Routine DDL
--- --------------------------------------------------------------------------------
-DELIMITER $$
+insert into detalle values ('F001-21',1,'A001',3,3.5),
+('F001-21',2,'A002',1,4);
 
-CREATE PROCEDURE `ejemplo`.`subida` (IN ofi varchar(10),IN  porcentaje float)
-BEGIN
-update empleados set salario=salario*porcentaje where oficio=ofi; 
-END$$
+insert into detalle values ('F002-21',1,'A001',4,3.5),
+('F002-21',2,'A004',3,2.5),
+('F002-21',3,'C001',1,2),
+('F003-21',1,'B001',3,3.7);
+
+
+insert into historicofacturadoporcliente values ('C999','Manolo borrado',345.6,"F902-15:F923-15:F876-15");

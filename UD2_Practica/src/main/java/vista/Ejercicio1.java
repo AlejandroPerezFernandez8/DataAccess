@@ -4,7 +4,15 @@
  */
 package vista;
 
+import com.toedter.calendar.JDateChooser;
 import controlador.controladorEjercicio1;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JSpinner;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import modelo.vo.*;
 
 /**
  *
@@ -34,7 +42,6 @@ public class Ejercicio1 extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtFecha = new com.toedter.calendar.JDateChooser();
         jLabel3 = new javax.swing.JLabel();
-        jComboEmpleados = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         txtCliente = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -50,12 +57,16 @@ public class Ejercicio1 extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jComboEmpleados = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gestion de Facturas");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
             }
         });
 
@@ -64,8 +75,6 @@ public class Ejercicio1 extends javax.swing.JFrame {
         jLabel2.setText("Fecha :");
 
         jLabel3.setText("Empleado :");
-
-        jComboEmpleados.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel4.setText("Cliente :");
 
@@ -86,7 +95,11 @@ public class Ejercicio1 extends javax.swing.JFrame {
 
         jLabel6.setText("Producto :");
 
-        jComboProductos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboProductos.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboProductosItemStateChanged(evt);
+            }
+        });
 
         jLabel7.setText("Cantidad :");
 
@@ -94,10 +107,22 @@ public class Ejercicio1 extends javax.swing.JFrame {
         jSpinnerCantidad.setOpaque(true);
 
         btnAñadir.setText("+");
+        btnAñadir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAñadirActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setText("-");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         jLabel8.setText("Total :");
+
+        txtTotal.setEnabled(false);
 
         jButton1.setText("FACTURAR");
 
@@ -127,8 +152,8 @@ public class Ejercicio1 extends javax.swing.JFrame {
                                 .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(84, 84, 84)
                                 .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(jComboEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jComboEmpleados, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(278, 278, 278)
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -162,15 +187,15 @@ public class Ejercicio1 extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jComboEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(txtFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel2)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel3)
+                        .addComponent(txtFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(txtFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)))
+                    .addComponent(jComboEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -199,18 +224,55 @@ public class Ejercicio1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        // TODO add your handling code here:
         controladorEjercicio1.cerrarFactory();
     }//GEN-LAST:event_formWindowClosed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        controladorEjercicio1.cargarComboEmpleados();
+        controladorEjercicio1.cargarComboProductos();
+        controladorEjercicio1.cambiarLimiteSpinner();
+    }//GEN-LAST:event_formWindowOpened
 
+    private void jComboProductosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboProductosItemStateChanged
+        controladorEjercicio1.cambiarLimiteSpinner();
+    }//GEN-LAST:event_jComboProductosItemStateChanged
+
+    private void btnAñadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirActionPerformed
+        // TODO add your handling code here:
+        controladorEjercicio1.añadirProductoTabla();
+        controladorEjercicio1.actualizarTotal();
+    }//GEN-LAST:event_btnAñadirActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        controladorEjercicio1.eliminarProductoTabla();
+        controladorEjercicio1.actualizarTotal();
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    
+    
+    //_-------------GETTERS----------------
+    public JButton getBtnAñadir() {return btnAñadir;}
+    public JButton getBtnEliminar() {return btnEliminar;}
+    public JButton getjButton1() {return jButton1;}
+    public JCheckBox getjCheckCobrada() {return jCheckCobrada;}
+    public JComboBox<Empleado> getjComboEmpleados() {return jComboEmpleados;}
+    public JComboBox<Producto> getjComboProductos() {return jComboProductos;}
+    public JSpinner getjSpinnerCantidad() { return jSpinnerCantidad;}
+    public JTable getjTablaProductos() {return jTablaProductos;}
+    public JTextField getTxtCliente() {return txtCliente;}
+    public JTextField getTxtFactura() {return txtFactura;}
+    public JDateChooser getTxtFecha() {return txtFecha;}
+    public JTextField getTxtTotal() {return txtTotal;}
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAñadir;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckCobrada;
-    private javax.swing.JComboBox<String> jComboEmpleados;
-    private javax.swing.JComboBox<String> jComboProductos;
+    private javax.swing.JComboBox<Empleado> jComboEmpleados;
+    private javax.swing.JComboBox<Producto> jComboProductos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
