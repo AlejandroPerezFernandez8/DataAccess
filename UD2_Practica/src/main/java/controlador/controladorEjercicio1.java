@@ -7,6 +7,9 @@ package controlador;
 import controlador.factory.DAOFactory;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Savepoint;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
@@ -34,14 +37,12 @@ public class controladorEjercicio1 {
     static DefaultTableModel modeloTabla = new DefaultTableModel(campos, 0);
     
     
-    // INICIAR VENTANA
+    // -------------INICIALIZACIONE---------------------------
     public static void init(){
         ventana.getjTablaProductos().setModel(modeloTabla);
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
     }
-    
-    //INICIO Y CIERRE DE FACTORY
     public static void iniciarFactory(){
         mySQLFactory = DAOFactory.getDAOFactory(DAOFactory.MYSQL);
         cliente_dao = mySQLFactory.getClienteDAO();
@@ -51,7 +52,6 @@ public class controladorEjercicio1 {
         historico_dao = mySQLFactory.getHistoricoDAO();
         producto_dao = mySQLFactory.getProductoAO();
     }
-    
     public static void cerrarFactory(){
         try {
             mySQLFactory.shutdown();
@@ -60,8 +60,10 @@ public class controladorEjercicio1 {
         }
     }
 
-    //---------------------METODOS------------------------
     
+    //*************************************************************
+    //--------------------------CONSULTAS--------------------------
+    //*************************************************************
     public static void cargarComboEmpleados() {
         Connection conn = null;
         try {
@@ -75,9 +77,7 @@ public class controladorEjercicio1 {
             mySQLFactory.releaseConnection(conn);
         }
     }
-    
-    
-     public static void cargarComboProductos() {
+    public static void cargarComboProductos() {
         Connection conn = null;
         try {
             conn = mySQLFactory.getConnection();
@@ -90,13 +90,49 @@ public class controladorEjercicio1 {
             mySQLFactory.releaseConnection(conn);
         }
     }
-
-    //PONEMOS DE LIMITE MAXIMO DEL SPINNER EL STOCK MAXIMO DEL PRODUCTO SELECCIONADO
+    public static void Facturar() {
+        Connection conn = null;
+        Savepoint point = null;
+        int registros;
+        try {
+            conn = mySQLFactory.getConnection();
+            //Primero Aumentamos la operativa del empleado
+            empleado_dao.aumentarOperativa(conn, ((Empleado)ventana.getjComboEmpleados().getSelectedItem()).getId_empleado());
+            point = conn.setSavepoint();
+            //Luego Creamos la factura
+            
+            
+            //Luego Creamos el detalle
+            //Luego Creamos o Insertamos en el historio de facturacion de los clientes    
+            
+        
+            conn.commit();
+        }catch (SQLException sqlEX){
+            try {
+                conn.rollback(point);
+            } catch (SQLException ex) {
+                Logger.getLogger(controladorEjercicio1.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("ERROR EN LA EJECUCION DE QUERYS - CODE:" + sqlEX.getErrorCode());
+        } catch (Exception e) {
+        }finally{mySQLFactory.releaseConnection(conn);}
+        
+        
+        
+        
+        
+    }
+    
+     
+     
+    //*************************************************************
+    //----------FUNCIONES DE COMPROBACIONES DE DATOS---------------
+    //*************************************************************
     public static void cambiarLimiteSpinner() {
         int limite = ((Producto)ventana.getjComboProductos().getSelectedItem()).getStock();
         ventana.getjSpinnerCantidad().setModel(new SpinnerNumberModel(0, 0, limite, 1));
     }
-
+    
     
     public static void añadirProductoTabla() {
        boolean productoExiste = false;
@@ -130,7 +166,6 @@ public class controladorEjercicio1 {
            }
        }
     }
-
     public static void eliminarProductoTabla() {
        boolean productoExiste = false;
        int fila = 0;
@@ -163,7 +198,6 @@ public class controladorEjercicio1 {
            }
        }
     }
-
     public static void actualizarTotal() {
         float Total = 0;
         for (int i = 0; i < modeloTabla.getRowCount(); i++) {
@@ -171,6 +205,19 @@ public class controladorEjercicio1 {
         }
         ventana.getTxtTotal().setText(String.valueOf(Total));
     }
+    public static void comprobarDatos() {
+        //COMPROBAMOS QUE LOS CAMPOS NO ESTEN VACIOS 
+        if (ventana.getTxtFactura().getText().isEmpty()|| ventana.getTxtCliente().getText().isEmpty() ||
+            ventana.getTxtFecha().getDate() == null){
+            JOptionPane.showMessageDialog(ventana, "Todos los campos son obligatorios");
+            return;
+        }
+        if (ventana.getTxtTotal().getText().isEmpty() || Float.parseFloat(ventana.getTxtTotal().getText()) == 0){
+            JOptionPane.showMessageDialog(ventana, "Necesario al menos 1 articulo para realizar la factura");
+        }
+        JOptionPane.showMessageDialog(ventana, "Todos los datos estan correctos");
+    }
+
     
     
     

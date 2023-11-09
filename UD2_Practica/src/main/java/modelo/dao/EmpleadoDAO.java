@@ -5,6 +5,7 @@
 package modelo.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -33,6 +34,13 @@ public class EmpleadoDAO {
                     rs.getInt(5)));
         }
         return modeloEmpleados;
+    }
+
+    public int aumentarOperativa(Connection conn, String id_empleado) throws SQLException {
+        String consulta = "update empleado set operativas = operativas + 1 where  idempleado = ?";
+        PreparedStatement sentencia = conn.prepareStatement(consulta);
+        sentencia.setString(1, id_empleado);
+        return sentencia.executeUpdate();
     }
     
 }

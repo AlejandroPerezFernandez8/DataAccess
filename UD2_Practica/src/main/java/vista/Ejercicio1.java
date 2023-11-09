@@ -125,6 +125,11 @@ public class Ejercicio1 extends javax.swing.JFrame {
         txtTotal.setEnabled(false);
 
         jButton1.setText("FACTURAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -248,6 +253,12 @@ public class Ejercicio1 extends javax.swing.JFrame {
         controladorEjercicio1.eliminarProductoTabla();
         controladorEjercicio1.actualizarTotal();
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        controladorEjercicio1.comprobarDatos();
+        controladorEjercicio1.Facturar();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     
     
