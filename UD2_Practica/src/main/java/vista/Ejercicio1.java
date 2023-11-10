@@ -72,23 +72,32 @@ public class Ejercicio1 extends javax.swing.JFrame {
 
         jLabel1.setText("Numero de Factura :");
 
+        txtFactura.setText("F001-21");
+        txtFactura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFacturaActionPerformed(evt);
+            }
+        });
+
         jLabel2.setText("Fecha :");
 
         jLabel3.setText("Empleado :");
 
         jLabel4.setText("Cliente :");
 
+        txtCliente.setText("C001");
+
         jLabel5.setText("Cobrada :");
 
         jTablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Producto", "Cantidad", "Precio"
+                "ID", "Producto", "Cantidad", "Precio"
             }
         ));
         jScrollPane1.setViewportView(jTablaProductos);
@@ -259,6 +268,10 @@ public class Ejercicio1 extends javax.swing.JFrame {
         controladorEjercicio1.comprobarDatos();
         controladorEjercicio1.Facturar();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFacturaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFacturaActionPerformed
 
     
     

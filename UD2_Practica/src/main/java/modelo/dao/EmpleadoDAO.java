@@ -27,20 +27,35 @@ public class EmpleadoDAO {
         
         while (rs.next()) {            
             modeloEmpleados.addElement(new Empleado(
-                    rs.getString(1),
-                    rs.getString(2),
-                    rs.getFloat(3),
-                    rs.getFloat(4),
-                    rs.getInt(5)));
+                rs.getString(1),
+                rs.getString(2),
+                rs.getFloat(3),
+                rs.getFloat(4),
+                rs.getInt(5)));
         }
         return modeloEmpleados;
     }
 
+    
+    
     public int aumentarOperativa(Connection conn, String id_empleado) throws SQLException {
         String consulta = "update empleado set operativas = operativas + 1 where  idempleado = ?";
         PreparedStatement sentencia = conn.prepareStatement(consulta);
+        
         sentencia.setString(1, id_empleado);
+        
         return sentencia.executeUpdate();
     }
+
     
+    
+    public int sumarIncentivo(Connection conn, double incentivo,String id_empleado) throws SQLException {
+        String consulta = "update empleado set incentivo = incentivo + ?  where  idempleado = ?";
+        PreparedStatement sentencia = conn.prepareStatement(consulta);
+        
+        sentencia.setDouble(1, incentivo);
+        sentencia.setString(2, id_empleado);
+        
+        return sentencia.executeUpdate();   
+    }
 }
