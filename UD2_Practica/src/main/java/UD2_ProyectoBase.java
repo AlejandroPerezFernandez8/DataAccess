@@ -1,5 +1,5 @@
 
-import controlador.controladorEjercicio1;
+import controlador.*;
 
 
 /*
@@ -9,6 +9,6 @@ import controlador.controladorEjercicio1;
 public class UD2_ProyectoBase {
 
     public static void main(String[] args) {
-        controladorEjercicio1.init();
+        controladorMenuPrincipal.init();
     }
 }

@@ -6,8 +6,11 @@ package modelo.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import modelo.vo.Factura;
 
 /**
  *
@@ -27,6 +30,24 @@ public class FacturaDAO {
         sentencia.setFloat(6, iva);
         
         return sentencia.executeUpdate();
+    }
+
+    public ArrayList<Factura> obtenerFacturadeCliente(Connection conn, String id_cliente) throws SQLException {
+        ArrayList<Factura> facturas = new ArrayList<>();
+        String consulta = "SELECT * FROM factura where idcliente like ?";
+        PreparedStatement sentencia = conn.prepareStatement(consulta);
+        sentencia.setString(1, id_cliente);
+        ResultSet resultado = sentencia.executeQuery();
+        
+        while (resultado.next()) {            
+            facturas.add(new Factura(
+                    resultado.getString(1),
+                    resultado.getString(2), 
+                    resultado.getString(3),
+                    resultado.getDate(4),
+                    resultado.getBoolean(5)));
+        }
+        return facturas;
     }
     
 }

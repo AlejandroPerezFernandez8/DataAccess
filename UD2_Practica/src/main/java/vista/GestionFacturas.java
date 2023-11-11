@@ -5,7 +5,7 @@
 package vista;
 
 import com.toedter.calendar.JDateChooser;
-import controlador.controladorEjercicio1;
+import controlador.controladorGestionFacturas;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -18,14 +18,14 @@ import modelo.vo.*;
  *
  * @author AD
  */
-public class Ejercicio1 extends javax.swing.JFrame {
+public class GestionFacturas extends javax.swing.JFrame {
 
     /**
      * Creates new form Principal
      */
-    public Ejercicio1() {
+    public GestionFacturas() {
         initComponents();
-        controladorEjercicio1.iniciarFactory();
+        controladorGestionFacturas.iniciarFactory();
     }
 
     /**
@@ -238,35 +238,35 @@ public class Ejercicio1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        controladorEjercicio1.cerrarFactory();
+        controladorGestionFacturas.cerrarFactory();
     }//GEN-LAST:event_formWindowClosed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        controladorEjercicio1.cargarComboEmpleados();
-        controladorEjercicio1.cargarComboProductos();
-        controladorEjercicio1.cambiarLimiteSpinner();
+        controladorGestionFacturas.cargarComboEmpleados();
+        controladorGestionFacturas.cargarComboProductos();
+        controladorGestionFacturas.cambiarLimiteSpinner();
     }//GEN-LAST:event_formWindowOpened
 
     private void jComboProductosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboProductosItemStateChanged
-        controladorEjercicio1.cambiarLimiteSpinner();
+        controladorGestionFacturas.cambiarLimiteSpinner();
     }//GEN-LAST:event_jComboProductosItemStateChanged
 
     private void btnAñadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirActionPerformed
         // TODO add your handling code here:
-        controladorEjercicio1.añadirProductoTabla();
-        controladorEjercicio1.actualizarTotal();
+        controladorGestionFacturas.añadirProductoTabla();
+        controladorGestionFacturas.actualizarTotal();
     }//GEN-LAST:event_btnAñadirActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        controladorEjercicio1.eliminarProductoTabla();
-        controladorEjercicio1.actualizarTotal();
+        controladorGestionFacturas.eliminarProductoTabla();
+        controladorGestionFacturas.actualizarTotal();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        controladorEjercicio1.comprobarDatos();
-        controladorEjercicio1.Facturar();
+        controladorGestionFacturas.comprobarDatos();
+        controladorGestionFacturas.Facturar();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFacturaActionPerformed

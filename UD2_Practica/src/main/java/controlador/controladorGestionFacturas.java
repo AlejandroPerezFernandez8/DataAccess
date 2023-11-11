@@ -16,21 +16,19 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 import modelo.dao.*;
 import modelo.vo.*;
-import vista.Ejercicio1;
+import vista.GestionFacturas;
 
 /**
  *
  * @author AD
  */
-public class controladorEjercicio1 {
+public class controladorGestionFacturas {
     static DAOFactory mySQLFactory;
-    static ClienteDAO cliente_dao;
     static EmpleadoDAO empleado_dao;
     static DetalleDAO detalle_dao;
     static FacturaDAO factura_dao;
-    static HistoricoDAO historico_dao;
     static ProductoDAO producto_dao;
-    static Ejercicio1 ventana = new Ejercicio1();
+    static GestionFacturas ventana = new GestionFacturas();
     static DefaultComboBoxModel<Empleado> modeloEmpleados = new DefaultComboBoxModel<>();
     static DefaultComboBoxModel<Producto> modeloProducto = new DefaultComboBoxModel<>();
     static String[] campos = {"ID","Producto","Cantidad","Precio"};
@@ -45,11 +43,11 @@ public class controladorEjercicio1 {
     }
     public static void iniciarFactory(){
         mySQLFactory = DAOFactory.getDAOFactory(DAOFactory.MYSQL);
-        cliente_dao = mySQLFactory.getClienteDAO();
+        mySQLFactory.getClienteDAO();
         empleado_dao = mySQLFactory.getEmpleadoDAO();
         detalle_dao = mySQLFactory.getDetalleDAO();
         factura_dao = mySQLFactory.getFacturaDAO();
-        historico_dao = mySQLFactory.getHistoricoDAO();
+        mySQLFactory.getHistoricoDAO();
         producto_dao = mySQLFactory.getProductoAO();
     }
     public static void cerrarFactory(){
@@ -139,7 +137,7 @@ public class controladorEjercicio1 {
                 }
                 conn.rollback(point);
             } catch (SQLException ex) {
-                Logger.getLogger(controladorEjercicio1.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(controladorGestionFacturas.class.getName()).log(Level.SEVERE, null, ex);
             }
             System.out.println("ERROR EN LA EJECUCION DE QUERYS - CODE:" + sqlEX.getErrorCode());
         } catch (Exception e) {
@@ -228,7 +226,7 @@ public class controladorEjercicio1 {
     public static void actualizarTotal() {
         float Total = 0;
         for (int i = 0; i < modeloTabla.getRowCount(); i++) {
-            Total += Integer.parseInt(modeloTabla.getValueAt(i, 2).toString()) * Float.parseFloat(modeloTabla.getValueAt(i, 2).toString());
+            Total += Integer.parseInt(modeloTabla.getValueAt(i, 2).toString()) * Float.parseFloat(modeloTabla.getValueAt(i, 3).toString());
         }
         ventana.getTxtTotal().setText(String.valueOf(Total));
     }
