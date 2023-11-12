@@ -49,5 +49,13 @@ public class FacturaDAO {
         }
         return facturas;
     }
+
+    public int cobrarFactura(Connection conn, String idFactura) throws SQLException {
+       String consulta = "update factura set cobrada = 1 where numfactura = ?";
+       PreparedStatement sentencia = conn.prepareStatement(consulta);
+       sentencia.setString(1, idFactura);
+       
+       return sentencia.executeUpdate();
+    }
     
 }

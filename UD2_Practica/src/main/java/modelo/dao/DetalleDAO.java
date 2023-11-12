@@ -6,6 +6,7 @@ package modelo.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -26,6 +27,19 @@ public class DetalleDAO {
         return sentencia.executeUpdate();
     }
 
+    
+    public float obtenerTotal(Connection conn,String id_factura) throws SQLException{
+       String consulta = "select (sum(cantidad * precio)* 1.21) as total from detalle where numfactura like ?";
+       PreparedStatement sentencia = conn.prepareStatement(consulta);
+       sentencia.setString(1, id_factura);
+       
+       ResultSet resultado = sentencia.executeQuery();
+       if (resultado.next()){
+           return resultado.getFloat(1);
+       }else{
+           return 0;
+       }
+    }
     
     
 }

@@ -43,6 +43,7 @@ public class GestionClientes extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
+        btnCobrarFactura = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -61,6 +62,11 @@ public class GestionClientes extends javax.swing.JFrame {
         });
 
         btnEliminarCliente.setText("Eliminar Cliente");
+        btnEliminarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarClienteActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Apellido :");
 
@@ -83,6 +89,13 @@ public class GestionClientes extends javax.swing.JFrame {
 
         jLabel5.setText("FACTURAS DEL CLIENTE :");
 
+        btnCobrarFactura.setText("Cobrar Factura");
+        btnCobrarFactura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCobrarFacturaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -90,9 +103,6 @@ public class GestionClientes extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnEliminarCliente)
-                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txt_idCliente)
@@ -110,7 +120,12 @@ public class GestionClientes extends javax.swing.JFrame {
                                 .addGap(64, 64, 64))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(216, 216, 216))))))
+                                .addGap(216, 216, 216))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnEliminarCliente)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCobrarFactura)
+                        .addGap(250, 250, 250))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,7 +152,10 @@ public class GestionClientes extends javax.swing.JFrame {
                         .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(54, 54, 54)
                         .addComponent(btnEliminarCliente))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCobrarFactura)))
                 .addContainerGap(65, Short.MAX_VALUE))
         );
 
@@ -155,6 +173,26 @@ public class GestionClientes extends javax.swing.JFrame {
         controladorGestionClientes.cargarTabla();
     }//GEN-LAST:event_txt_idClienteFocusLost
 
+    private void btnCobrarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarFacturaActionPerformed
+        // TODO add your handling code here:
+        controladorGestionClientes.cobrarFactura();
+    }//GEN-LAST:event_btnCobrarFacturaActionPerformed
+
+    private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
+        // TODO add your handling code here:
+        controladorGestionClientes.eliminarCliente();
+    }//GEN-LAST:event_btnEliminarClienteActionPerformed
+
+    public JButton getBtnCobrarFactura() {
+        return btnCobrarFactura;
+    }
+
+    public JButton getBtnEliminarCliente() {
+        return btnEliminarCliente;
+    }
+
+    
+    
     public JButton getjButton1() {
         return btnEliminarCliente;
     }
@@ -183,6 +221,7 @@ public class GestionClientes extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCobrarFactura;
     private javax.swing.JButton btnEliminarCliente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

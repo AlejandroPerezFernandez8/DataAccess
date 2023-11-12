@@ -33,6 +33,31 @@ public class ClienteDAO {
         }
         return null;
     }
+    
+    public boolean hasFacturasPagadas(Connection conn,String idcliente) throws SQLException {
+        String consulta = "select cobrada from factura where idcliente like ? and cobrada != 1;";
+        PreparedStatement sentencia = conn.prepareStatement(consulta);
+        sentencia.setString(1, idcliente);
+        
+        ResultSet resultado =  sentencia.executeQuery();
+        
+        if (resultado.next()){
+            //NO TIENE TODAS LAS FACTURAS PAGADAS
+            return false;
+        }else{
+            //TIENE TODAS LAS FACTURAS PAGADAS
+            return true;
+        }
+    }
+
+    public int eliminarCliente(Connection conn, String idcliente) throws SQLException {
+        String consulta = "delete from cliente where idcliente like ?";
+        PreparedStatement sentencia = conn.prepareStatement(consulta);
+        
+        sentencia.setString(1, idcliente);
+        return sentencia.executeUpdate();
+        
+    }
 
   
 }
