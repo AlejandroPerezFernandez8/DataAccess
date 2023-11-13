@@ -40,6 +40,13 @@ public class DetalleDAO {
            return 0;
        }
     }
+
+    public int eliminarDetalles(Connection conn, String idCliente) throws SQLException {
+        String consulta = "delete from detalle where numfactura in (select numfactura from factura where idcliente like ?)";
+        PreparedStatement sentencia = conn.prepareStatement(consulta);
+        sentencia.setString(1, idCliente);
+        return sentencia.executeUpdate();
+    }
     
     
 }

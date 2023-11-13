@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import modelo.dao.ClienteDAO;
 import modelo.dao.DetalleDAO;
@@ -46,6 +47,7 @@ public class controladorGestionClientes {
         try {mysqlFactory.shutdown();} catch (Exception ex) {System.out.println("Error en el cierre del factory");}
     }
     public static void init(){
+        ventana.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         ventana.getjTable1().setModel(modelo);
         ventana.setTitle("Gestion de empleados");
         ventana.setLocationRelativeTo(null);
@@ -54,15 +56,10 @@ public class controladorGestionClientes {
     
     
     
-    
-    
     //**************************************************
     //**********************CONSULTAS*******************
     //**************************************************
-    
-    
-    
-    
+
     public static void cargarTabla(){
         Connection conn = null;
         modelo.setRowCount(0);
@@ -76,11 +73,10 @@ public class controladorGestionClientes {
                       modelo.addRow(datos);
                 }     
             }
-            
-            
         } catch (Exception e) {
         }finally{mysqlFactory.releaseConnection(conn);}
     }
+   
     public static void mostrarDatosCliente() {
         Connection conn = null;
         ventana.getTxtNombre().setText("");
@@ -101,7 +97,7 @@ public class controladorGestionClientes {
             mysqlFactory.releaseConnection(conn);
         }
     }
-
+   
     public static void eliminarCliente(){
         Connection conn = null;
         
@@ -117,6 +113,7 @@ public class controladorGestionClientes {
             //COMPROBAMOS QUE EL CLIENTE TIENE TODAS LAS FACTURAS PAGADAS
             if (!cliente_dao.hasFacturasPagadas(conn,ventana.getTxt_idCliente().getText())){
                 JOptionPane.showMessageDialog(ventana, "El cliente no tiene todas las facturas pagadas");
+                return;
             }
 
             //CREAMOS EL HISTORICO DE CLIENTES
@@ -128,8 +125,11 @@ public class controladorGestionClientes {
                     getnombreFacturas()
            );
 
-            //ANTES DE BORRAR EL CLIENTE TENEMOS QUE BORRAR TODAS LAS FACTURAS ASOCIADAS
+            //ANTES DE BORRAR LAS FACTURAS BORRAMOS LOS DETTALES de todas las facturas
+            detalle_dao.eliminarDetalles(conn,ventana.getTxt_idCliente().getText());
             
+            //ANTES DE BORRAR EL CLIENTE TENEMOS QUE BORRAR TODAS LAS FACTURAS ASOCIADAS
+            factura_dao.eliminarFacturas(conn, ventana.getTxt_idCliente().getText());
             
             //BORRAMOS EL CLIENTE
             JOptionPane.showMessageDialog(ventana, cliente_dao.eliminarCliente(conn,ventana.getTxt_idCliente().getText())+" Cliente borrado");
@@ -146,8 +146,6 @@ public class controladorGestionClientes {
         }finally{mysqlFactory.releaseConnection(conn);}
         
     }
-    
-    
     
     private static String getnombreFacturas(){
         String cadena = "";
@@ -199,7 +197,7 @@ public class controladorGestionClientes {
         
         return total;
     }
-
+    
     public static void cobrarFactura(){
         Connection conn = null;
         String idFactura;
@@ -230,6 +228,30 @@ public class controladorGestionClientes {
         
         
         
+    }
+
+    public static void crearCliente() {
+        Connection conn = null;
+        int registros = 0;
+        try {
+            conn = mysqlFactory.getConnection();
+            
+            registros = cliente_dao.crearCliente(conn,
+                    ventana.getTxt_idCliente().getText(),
+                    ventana.getTxtNombre().getText(),
+                    ventana.getTxtApellido().getText(),
+                    ventana.getTxtDireccion().getText()
+                    );
+            conn.commit();
+            JOptionPane.showMessageDialog(ventana,registros + " Clientes creados");
+        }catch (SQLException sqlex){
+            
+            switch (sqlex.getErrorCode()) {
+                case 1062 -> {JOptionPane.showMessageDialog(ventana, "El cliente ya existe");}
+            }
+            try {conn.rollback();} catch (SQLException ex) {System.out.println("Error durante el rolback");}
+        } catch (Exception e) {
+        }finally{mysqlFactory.releaseConnection(conn);}
     }
     
     

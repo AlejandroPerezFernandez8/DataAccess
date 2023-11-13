@@ -18,7 +18,7 @@ import modelo.vo.*;
  *
  * @author AD
  */
-public class GestionFacturas extends javax.swing.JFrame {
+public class GestionFacturas extends javax.swing.JFrame{
 
     /**
      * Creates new form Principal
@@ -265,8 +265,9 @@ public class GestionFacturas extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        controladorGestionFacturas.comprobarDatos();
-        controladorGestionFacturas.Facturar();
+        if (controladorGestionFacturas.comprobarDatos()){
+            controladorGestionFacturas.Facturar();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFacturaActionPerformed

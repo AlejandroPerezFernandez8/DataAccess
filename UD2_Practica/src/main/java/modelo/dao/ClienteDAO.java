@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import modelo.vo.Cliente;
 
 /**
@@ -58,6 +57,22 @@ public class ClienteDAO {
         return sentencia.executeUpdate();
         
     }
+
+    public int crearCliente(Connection conn, String idCliente, String nombre, String apellido, String direccion) throws SQLException {
+       String consulta = "insert into cliente values (?,?,?,?)";
+       PreparedStatement sentencia = conn.prepareStatement(consulta);
+       
+       sentencia.setString(1, idCliente);
+       sentencia.setString(2, nombre);
+       sentencia.setString(3, apellido);
+       sentencia.setString(4, direccion);
+       
+       return sentencia.executeUpdate();
+    }
+
+    
+    
+    
 
   
 }

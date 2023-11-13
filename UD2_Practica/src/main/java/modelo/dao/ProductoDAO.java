@@ -5,6 +5,7 @@
 package modelo.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,17 +18,26 @@ import modelo.vo.*;
  */
 public class ProductoDAO {
     
-     public DefaultComboBoxModel<Producto> cargarCombo(Connection conn, DefaultComboBoxModel<Producto> modeloEmpleados) throws SQLException {
-        modeloEmpleados.removeAllElements();
+     public DefaultComboBoxModel<Producto> cargarCombo(Connection conn, DefaultComboBoxModel<Producto> modeloProductos) throws SQLException {
+        modeloProductos.removeAllElements();
         String consulta = "SELECT * FROM  productos";
         Statement sentencia = conn.createStatement();
         sentencia.execute(consulta);
         ResultSet rs = sentencia.getResultSet();
         
         while (rs.next()) {            
-            modeloEmpleados.addElement(new Producto(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getFloat(4)));
+            modeloProductos.addElement(new Producto(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getFloat(4)));
         }
-        return modeloEmpleados;
+        return modeloProductos;
+    }
+
+    public int restarStock(Connection conn, String idProducto, Integer cantidad) throws SQLException {
+        String consulta = "update productos set stock = stock - ? where idproducto like ?";
+        PreparedStatement sentencia =conn.prepareStatement(consulta);
+        sentencia.setInt(1, cantidad);
+        sentencia.setString(2, idProducto);
+        
+        return sentencia.executeUpdate();
     }
      
      

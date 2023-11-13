@@ -58,4 +58,14 @@ public class FacturaDAO {
        return sentencia.executeUpdate();
     }
     
+    
+    public int eliminarFacturas(Connection conn, String id_cliente) throws SQLException{
+        String consulta =  "delete from factura where idcliente like ?";
+        PreparedStatement sentencia = conn.prepareStatement(consulta);
+        sentencia.setString(1, id_cliente);
+        
+        return sentencia.executeUpdate();
+        
+    }
+    
 }

@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import modelo.dao.*;
 import modelo.vo.*;
@@ -37,6 +38,7 @@ public class controladorGestionFacturas {
     
     // -------------INICIALIZACIONE---------------------------
     public static void init(){
+        ventana.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         ventana.getjTablaProductos().setModel(modeloTabla);
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
@@ -77,6 +79,7 @@ public class controladorGestionFacturas {
     }
     public static void cargarComboProductos() {
         Connection conn = null;
+        modeloProducto = new DefaultComboBoxModel<Producto>();
         try {
             conn = mySQLFactory.getConnection();
             modeloProducto = producto_dao.cargarCombo(conn,modeloProducto);
@@ -95,7 +98,6 @@ public class controladorGestionFacturas {
         
         Connection conn = null;
         Savepoint point = null;
-        int registros;
         try {
             conn = mySQLFactory.getConnection();
             //********Primero Aumentamos la operativa del empleado********
@@ -105,6 +107,16 @@ public class controladorGestionFacturas {
             //******************Sumamos el incentivo*************
             empleado_dao.sumarIncentivo(conn,Double.parseDouble(ventana.getTxtTotal().getText()) / 100 , id_empleado); 
             
+            //****Restamos el stock que se introduce y se recarga todo****
+            //RECORREREMOS TODOS LOS PRODUCTOS QUITANDO SUS RESPECTIVOS STOCKS
+            for (int i = 0; i < ventana.getjTablaProductos().getRowCount(); i++) {
+                producto_dao.restarStock(conn,
+                        String.valueOf(ventana.getjTablaProductos().getValueAt(i, 0)),
+                        Integer.valueOf(String.valueOf(ventana.getjTablaProductos().getValueAt(i, 2))));
+            }
+            //ACTUALIZAMOS LOS CAMPOS AL FINAL DE LA OPERATIVA COMPLETA
+            
+            
             //**************Luego Creamos la factura*************
             factura_dao.crearFactura(conn,
                     num_Factura,
@@ -113,27 +125,29 @@ public class controladorGestionFacturas {
                     ventana.getTxtFecha().getDate(),
                     ventana.getjCheckCobrada().isSelected(),
                     21
-                    );
+            );
             
             //****************Luego Creamos el detalle******************
             //POR CADA FILA DE LA TABLA SE HACE UNA INSERCION
             for (int i = 0; i < ventana.getjTablaProductos().getRowCount(); i++) {
                 
-                registros = detalle_dao.crearRegistro(conn,
-                        num_Factura,
-                        i + 1,
-                        (String)ventana.getjTablaProductos().getValueAt(i, 0),
-                        Integer.parseInt(ventana.getjTablaProductos().getValueAt(i,2).toString()),
-                        Float.parseFloat(ventana.getjTablaProductos().getValueAt(i,3).toString())
-                        );
-                System.out.println(registros);
+                detalle_dao.crearRegistro(conn,
+                    num_Factura,
+                    i + 1,
+                    (String)ventana.getjTablaProductos().getValueAt(i, 0),
+                    Integer.parseInt(ventana.getjTablaProductos().getValueAt(i,2).toString()),
+                    Float.parseFloat(ventana.getjTablaProductos().getValueAt(i,3).toString())
+                );
             }
         
             conn.commit();
+            JOptionPane.showMessageDialog(ventana, "Factura Creada");
+            limpiarFormulario();
         }catch (SQLException sqlEX){
             try {
                 switch (sqlEX.getErrorCode()) {
                     case 1062 -> {JOptionPane.showMessageDialog(ventana, "Esa factura con ese nombre ya existe");}
+                    case 1452 -> {JOptionPane.showMessageDialog(ventana, "El cliente no existe");}
                 }
                 conn.rollback(point);
             } catch (SQLException ex) {
@@ -142,12 +156,10 @@ public class controladorGestionFacturas {
             System.out.println("ERROR EN LA EJECUCION DE QUERYS - CODE:" + sqlEX.getErrorCode());
         } catch (Exception e) {
             System.out.println("Excepcion");
-        }finally{mySQLFactory.releaseConnection(conn);}
-        
-        
-        
-        
-        
+        }finally{
+            mySQLFactory.releaseConnection(conn);
+            cargarComboProductos();
+        }
     }
     
      
@@ -230,37 +242,38 @@ public class controladorGestionFacturas {
         }
         ventana.getTxtTotal().setText(String.valueOf(Total));
     }
-    public static void comprobarDatos() {
+    public static boolean comprobarDatos() {
         //COMPROBAMOS QUE LOS CAMPOS NO ESTEN VACIOS 
         if (ventana.getTxtFactura().getText().isEmpty()|| ventana.getTxtCliente().getText().isEmpty() ||
             ventana.getTxtFecha().getDate() == null){
             JOptionPane.showMessageDialog(ventana, "Todos los campos son obligatorios");
-            return;
+            return false;
         }
         if (ventana.getTxtTotal().getText().isEmpty() || Float.parseFloat(ventana.getTxtTotal().getText()) == 0){
             JOptionPane.showMessageDialog(ventana, "Necesario al menos 1 articulo para realizar la factura");
-            return;
+            return false;
         }
         
         //POR ULTIMO VOY A COMPROBAR QUE EL CLIENTE Y LA FACTURA SIGAN UNA ESTRUCTURA PARA QUE NO SE PONGA CUALQUIER DATO
         if (!ventana.getTxtFactura().getText().matches("^F\\d{3}-\\d{2}$")){
             JOptionPane.showMessageDialog(ventana, "Error: La factura debe empezar por F seguida de 3 digitos, un guion y 2 digitos");
-            return;
+            return false;
         }
         if (!ventana.getTxtCliente().getText().matches("^C\\d{3}$")){
             JOptionPane.showMessageDialog(ventana,"Error:El cliente debe empezar por C seguido de 3 digitos");
-            return;
+            return false;
         }
-        JOptionPane.showMessageDialog(ventana, "Creando Factura.....");
+        return true;
     }
     
     
-    
+    public static void limpiarFormulario(){
+        ventana.setVisible(false);
+        ventana = null;
+        ventana = new GestionFacturas();
+        init();
+        modeloTabla.setRowCount(0);
+    }  
     
   
-    
-    
-    
-    
-    
 }
