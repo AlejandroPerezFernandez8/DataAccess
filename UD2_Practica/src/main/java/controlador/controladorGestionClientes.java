@@ -49,7 +49,7 @@ public class controladorGestionClientes {
     public static void init(){
         ventana.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         ventana.getjTable1().setModel(modelo);
-        ventana.setTitle("Gestion de empleados");
+        ventana.setTitle("Gestion de Clientes");
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
     }
@@ -63,9 +63,24 @@ public class controladorGestionClientes {
     public static void cargarTabla(){
         Connection conn = null;
         modelo.setRowCount(0);
+        ArrayList<Factura> facturas; 
+        
+                
+        if (ventana.getFechaMinima().getDate() == null || ventana.getFechaMinima().getDate() == null){
+            JOptionPane.showMessageDialog(ventana,"Si desea ver las facturas rellene los campos fecha minima y fecha maxima");
+            return;
+        }
+        
         try {
             conn = mysqlFactory.getConnection();
-            ArrayList<Factura> facturas =  factura_dao.obtenerFacturadeCliente(conn,ventana.getTxt_idCliente().getText());
+            
+            facturas =  factura_dao.obtenerFacturadeClienteEntreFechas(
+                        conn,ventana.getTxt_idCliente().getText(),
+                        ventana.getFechaMinima().getDate(),
+                        ventana.getFechaMaxima().getDate()
+            );
+            
+
             if (!facturas.isEmpty()){
                 for (Factura factura : facturas) {
                       //SE CARGAN TODAS LAS FACTURAS
@@ -79,9 +94,11 @@ public class controladorGestionClientes {
    
     public static void mostrarDatosCliente() {
         Connection conn = null;
+
         ventana.getTxtNombre().setText("");
         ventana.getTxtApellido().setText("");
         ventana.getTxtDireccion().setText("");
+        
         try {
             conn = mysqlFactory.getConnection();
             Cliente c = cliente_dao.obtenerDatosCliente(conn,ventana.getTxt_idCliente().getText());
@@ -106,7 +123,7 @@ public class controladorGestionClientes {
             conn = mysqlFactory.getConnection();
             //COMPORBAMOS QUE EL CLIENTE EXISTE 
             if (cliente_dao.obtenerDatosCliente(conn,ventana.getTxt_idCliente().getText()) == null){
-                JOptionPane.showMessageDialog(ventana, "El empleado no existe");
+                JOptionPane.showMessageDialog(ventana, "El cliente no existe");
                 return;
             }
             
@@ -137,6 +154,7 @@ public class controladorGestionClientes {
             conn.commit();
         }catch (SQLException sqlEX){
             System.out.println(sqlEX.getErrorCode());
+            if(sqlEX.getErrorCode() == 1062){JOptionPane.showMessageDialog(ventana, "El cliente no se puede eliminar, ya existe en nuestros historicos");}
             try {
                 conn.rollback();
             } catch (SQLException ex) {
@@ -156,7 +174,7 @@ public class controladorGestionClientes {
             //DEBEMOS OBTNER UN ARRAYLIST CON EL ID DE FACTURA DE CADA UNA
             ArrayList<Factura> facturasCliente = factura_dao.obtenerFacturadeCliente(conn, ventana.getTxt_idCliente().getText());
             if (facturasCliente.isEmpty()){
-                JOptionPane.showMessageDialog(ventana, "El cliente no tiene facturas");
+                return cadena;
             }else{
 
                 //AHORA HACEMOS UNA CONSULTA EN DETALLE PARA POR OBTENER EL TOTAL
@@ -181,8 +199,9 @@ public class controladorGestionClientes {
             
             //DEBEMOS OBTNER UN ARRAYLIST CON EL ID DE FACTURA DE CADA UNA
             ArrayList<Factura> facturasCliente = factura_dao.obtenerFacturadeCliente(conn, ventana.getTxt_idCliente().getText());
+            
             if (facturasCliente.isEmpty()){
-                JOptionPane.showMessageDialog(ventana, "El cliente no tiene facturas");
+                return total;
             }else{
 
                 //AHORA HACEMOS UNA CONSULTA EN DETALLE PARA POR OBTENER EL TOTAL

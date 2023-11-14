@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import modelo.vo.Factura;
 
+
 /**
  *
  * @author Alejandro.perezferna
@@ -37,6 +38,8 @@ public class FacturaDAO {
         String consulta = "SELECT * FROM factura where idcliente like ?";
         PreparedStatement sentencia = conn.prepareStatement(consulta);
         sentencia.setString(1, id_cliente);
+        
+        
         ResultSet resultado = sentencia.executeQuery();
         
         while (resultado.next()) {            
@@ -67,5 +70,31 @@ public class FacturaDAO {
         return sentencia.executeUpdate();
         
     }
+    
+    
+    public ArrayList<Factura> obtenerFacturadeClienteEntreFechas(Connection conn, String id_cliente,Date fechaMin,Date fechaMax) throws SQLException {
+        ArrayList<Factura> facturas = new ArrayList<>();
+        String consulta = "SELECT * FROM factura where idcliente like ? and (fecha between ? and ?)";
+        PreparedStatement sentencia = conn.prepareStatement(consulta);
+        sentencia.setString(1, id_cliente);
+        sentencia.setDate(2,new java.sql.Date(fechaMin.getTime()));
+        sentencia.setDate(3,new java.sql.Date(fechaMax.getTime()));
+        
+        ResultSet resultado = sentencia.executeQuery();
+        
+        while (resultado.next()) {            
+            facturas.add(new Factura(
+                    resultado.getString(1),
+                    resultado.getString(2), 
+                    resultado.getString(3),
+                    resultado.getDate(4),
+                    resultado.getBoolean(5)));
+        }
+        return facturas;
+    }
+    
+    
+    
+    
     
 }
