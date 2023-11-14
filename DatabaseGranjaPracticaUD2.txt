@@ -1,0 +1,39 @@
+create database Vacas;
+use Vacas;
+
+create table Veterinario(
+	ID_veterinario varchar(10) primary key,
+    nombre varchar(20),
+    apellidos varchar(20),
+    edad int unsigned,
+    telefono varchar(9)
+);
+
+create table matadero (
+	ID_matadero varchar(10) primary key,
+    nombre varchar(20),
+    direccion varchar (50),
+    telefono varchar(9)
+);
+
+create table Vaca(
+	ID_vaca varchar(10) primary key,
+    ID_matadero varchar(10),
+    raza varchar(20),
+    sexo char, /*M o F*/
+    edad int unsigned,
+    foreign key (ID_matadero) references matadero(ID_matadero)
+);
+
+create table tratar(
+	ID_vaca varchar(10),
+    ID_veterinario varchar(10),
+    fecha date,
+    tratamiento varchar(255),
+    primary key(ID_vaca,ID_Veterinario),
+    foreign key (ID_vaca) references Vaca(ID_vaca),
+    foreign key (ID_veterinario) references Veterinario(ID_veterinario)
+);
+
+
+
