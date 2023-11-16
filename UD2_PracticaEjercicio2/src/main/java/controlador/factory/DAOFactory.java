@@ -1,6 +1,7 @@
 package controlador.factory;
 
 import java.sql.Connection;
+import modelo.dao.*;
 
 
 public abstract class DAOFactory {
@@ -30,4 +31,8 @@ public abstract class DAOFactory {
 		// TODO Auto-generated method stub		
 	}
 
+        public abstract VacaDAO getVacaDAO();
+        public abstract VeterinarioDAO getVeterinarioDAO();
+        public abstract MataderoDAO getMataderoDAO();
+        public abstract TratarDAO getTratarDAO();
 }

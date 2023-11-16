@@ -1,3 +1,4 @@
+drop database if exists Vacas;
 create database Vacas;
 use Vacas;
 
@@ -22,6 +23,7 @@ create table Vaca(
     raza varchar(20),
     sexo char, /*M o F*/
     edad int unsigned,
+    tratamientos int unsigned, /*Numero de tratamientos que a recibido la vaca*/
     foreign key (ID_matadero) references matadero(ID_matadero)
 );
 
@@ -35,5 +37,37 @@ create table tratar(
     foreign key (ID_veterinario) references Veterinario(ID_veterinario)
 );
 
+-- Inserts para la tabla Veterinario
+INSERT INTO Veterinario (ID_veterinario, nombre, apellidos, edad, telefono)
+VALUES
+    ('VET001', 'Juan', 'Gómez', 35, '123456789'),
+    ('VET002', 'Maria', 'López', 28, '987654321'),
+    ('VET003', 'Pedro', 'Martínez', 40, '111222333');
+
+-- Inserts para la tabla Matadero
+INSERT INTO Matadero (ID_matadero, nombre, direccion, telefono)
+VALUES
+    ('MAT001', 'Matadero A', 'Calle 123, Ciudad', '555111000'),
+    ('MAT002', 'Matadero B', 'Avenida 456, Pueblo', '999888777');
+
+-- Inserts para la tabla Vaca
+INSERT INTO Vaca (ID_vaca, ID_matadero, raza, sexo, edad)
+VALUES
+    ('VAC001', 'MAT001', 'Holstein', 'F', 3),
+    ('VAC002', 'MAT001', 'Angus', 'M', 4),
+    ('VAC003', 'MAT002', 'Hereford', 'F', 2),
+    ('VAC004', NULL, 'Jersey', 'F', 5), -- Vaca sin matadero asignado
+    ('VAC005', NULL, 'Simmental', 'M', 6), -- Vaca sin matadero asignado
+    ('VAC006', 'MAT002', 'Limousin', 'M', 3);
+
+-- Inserts para la tabla Tratar
+INSERT INTO Tratar (ID_vaca, ID_veterinario, fecha, tratamiento)
+VALUES
+    ('VAC001', 'VET001', '2023-01-15', 'Vacunación'),
+    ('VAC002', 'VET002', '2023-02-20', 'Desparasitación'),
+    ('VAC003', 'VET003', '2023-03-10', 'Control de peso'),
+    ('VAC004', 'VET001', '2023-04-05', 'Tratamiento preventivo'),
+    ('VAC005', 'VET002', '2023-05-12', 'Revisión general'),
+    ('VAC006', 'VET003', '2023-06-08', 'Vacunación');
 
 
