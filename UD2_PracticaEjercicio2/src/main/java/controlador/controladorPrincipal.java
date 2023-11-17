@@ -232,9 +232,24 @@ public class controladorPrincipal {
             mysqlFactory.releaseConnection(conn);
         }
     }
+
+    public static void CantidadVacasSinMataderoConTratamiento() {
+        Connection conn = null;
+        try {
+            conn = mysqlFactory.getConnection();
+ 
+            int numero = vaca_dao.Procedimiento(conn);
+            ventana.getTxtNumeroVacas().setText(numero+"");
+            
+        }catch (SQLException sqlEx){
+            System.out.println(sqlEx.getErrorCode());
+        } catch (Exception e) {
+        }finally{mysqlFactory.releaseConnection(conn);}
+        
+    }
     
     
-    
+   
     
     
     

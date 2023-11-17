@@ -66,7 +66,17 @@ VALUES
     ('VAC001', 'VET001', '2023-01-15', 'Vacunación'),
     ('VAC002', 'VET002', '2023-02-20', 'Desparasitación'),
     ('VAC003', 'VET003', '2023-03-10', 'Control de peso'),
-    ('VAC004', 'VET001', '2023-04-05', 'Tratamiento preventivo'),
-    ('VAC005', 'VET002', '2023-05-12', 'Revisión general'),
-    ('VAC006', 'VET003', '2023-06-08', 'Vacunación');
+    ('VAC004', 'VET001', '2023-04-05', 'Tratamiento preventivo');
+    
+    
+DELIMITER //
+/*OBTIENE EL NUMERO DE VACAS QUE HAY EN LA GRANAJA QUE NO ESTAN EN UN MATDERO Y ESTAN EN ALGUN TRATAMIENTO*/
+CREATE PROCEDURE proc(OUT num_vacas INT)
+BEGIN
+    SELECT COUNT(DISTINCT Vaca.ID_vaca) INTO num_vacas
+    FROM Vaca
+    LEFT JOIN Tratar ON Vaca.ID_vaca = Tratar.ID_vaca
+    WHERE Vaca.ID_matadero IS NULL AND Tratar.ID_vaca IS NOT NULL;
+END //
+DELIMITER ;
 

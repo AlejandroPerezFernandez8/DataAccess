@@ -4,11 +4,13 @@
  */
 package modelo.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import modelo.VO.Vaca;
 
@@ -107,6 +109,15 @@ public class VacaDAO {
         
         sentencia.setString(1, idVaca);
         sentencia.executeUpdate();
+    }
+
+    public int Procedimiento(Connection conn) throws SQLException {
+        String consulta = "{call proc(?)}";
+        CallableStatement sentencia = conn.prepareCall(consulta);
+        sentencia.registerOutParameter(1, Types.INTEGER);
+        sentencia.executeQuery();
+       
+        return sentencia.getInt(1);
     }
 
    
