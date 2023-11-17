@@ -23,7 +23,7 @@ create table Vaca(
     raza varchar(20),
     sexo char, /*M o F*/
     edad int unsigned,
-    tratamientos int unsigned, /*Numero de tratamientos que a recibido la vaca*/
+    tratamientos int unsigned default 0, /*Numero de tratamientos que a recibido la vaca*/
     foreign key (ID_matadero) references matadero(ID_matadero)
 );
 
@@ -32,7 +32,7 @@ create table tratar(
     ID_veterinario varchar(10),
     fecha date,
     tratamiento varchar(255),
-    primary key(ID_vaca,ID_Veterinario),
+    primary key(ID_vaca,ID_Veterinario,fecha),
     foreign key (ID_vaca) references Vaca(ID_vaca),
     foreign key (ID_veterinario) references Veterinario(ID_veterinario)
 );
@@ -69,5 +69,4 @@ VALUES
     ('VAC004', 'VET001', '2023-04-05', 'Tratamiento preventivo'),
     ('VAC005', 'VET002', '2023-05-12', 'Revisión general'),
     ('VAC006', 'VET003', '2023-06-08', 'Vacunación');
-
 

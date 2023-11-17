@@ -8,6 +8,8 @@ import controlador.factory.DAOFactory;
 import modelo.VO.*;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Savepoint;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -25,6 +27,7 @@ public class controladorPrincipal {
     static VacaDAO vaca_dao;
     static MataderoDAO matadero_dao;
     static TratarDAO tratar_dao;
+    static VeterinarioDAO veterinario_dao;
             
     public static void init(){
         ventana.setLocationRelativeTo(null);
@@ -37,6 +40,7 @@ public class controladorPrincipal {
         vaca_dao = mysqlFactory.getVacaDAO();
         matadero_dao = mysqlFactory.getMataderoDAO();
         tratar_dao = mysqlFactory.getTratarDAO();
+        veterinario_dao = mysqlFactory.getVeterinarioDAO();
     }
     
     public static void cerrarFactory(){
@@ -85,6 +89,8 @@ public class controladorPrincipal {
         }finally{mysqlFactory.releaseConnection(conn);}
         
     }
+    
+    //----------------------------------INSERCION BORRADO Y MODIFICACION-----------------------------------
 
     public static void insertarVaca() {
         Connection conn = null;
@@ -177,6 +183,58 @@ public class controladorPrincipal {
     }
     
    
+    
+    
+    //--------------------------------------TRATAMIENTOS DE LA VACAS----------------------------------
+
+    public static void realizarTratamiento() {
+        Connection conn = null;
+        Savepoint SP = null;
+        String idVaca = ventana.getTxtIDVacaTratamientos().getText();
+        String idVeterinario = ventana.getTxtIDVeterinario().getText();
+        Date fecha = ventana.getjDateChooser1().getDate();
+        String tratamientos = ventana.getTxtTratamiento().getText();
+        
+        try {
+            conn = mysqlFactory.getConnection();
+            //COMPROBAMOS QUE LOS CAMPOS ESTEN CUBIERTOS
+            if (ventana.getTxtIDVacaTratamientos().getText().isEmpty() || ventana.getTxtIDVeterinario().getText().isEmpty() || ventana.getjDateChooser1().getDate() == null || ventana.getTxtTratamiento().getText().isEmpty()){
+                JOptionPane.showMessageDialog(ventana, "Todos los datos deben estar cubiertos");
+                return;
+            }
+            
+            //VAMOS A COMPROBAR QUE LA VACA Y EL VETERINARIO EXISTEN
+            if (vaca_dao.getVaca(conn,idVaca) == null){JOptionPane.showMessageDialog(ventana, "La vaca no existe");return;}
+            if (veterinario_dao.getVeterinario(conn,idVeterinario) == null){JOptionPane.showMessageDialog(ventana, "El veterinario no existe");return;}
+            
+            
+            //PARA TRATAR UNA VACA PRIMERO SUMAMOS 1 AL CAMPO 
+            //TRATAMIENTOS SI O SI AUNQUE NO SE LLEGUE A REALIZAR
+            vaca_dao.aumentarTratamientos(conn,idVaca);
+            SP = conn.setSavepoint();
+
+            //AHORA HACEMOS LA INSERCION EN LA TABLA TRATAR
+            tratar_dao.insertarTratamiento(conn,idVaca,idVeterinario,fecha,tratamientos);
+            
+            
+            conn.commit();
+            JOptionPane.showMessageDialog(ventana,"Vaca tratada correctamente");
+        }catch (SQLException sqlEx){
+            if (sqlEx.getErrorCode() == 1062){JOptionPane.showMessageDialog(ventana, "Ya existe un tratamiento en la misma fecha");}
+            System.out.println(sqlEx.getErrorCode());
+            try {
+                conn.rollback(SP);
+            } catch (SQLException ex) {
+                Logger.getLogger(controladorPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (Exception e) {
+        }finally{
+            mysqlFactory.releaseConnection(conn);
+        }
+    }
+    
+    
+    
     
     
     

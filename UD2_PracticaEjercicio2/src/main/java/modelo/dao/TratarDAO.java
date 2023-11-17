@@ -7,6 +7,7 @@ package modelo.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Date;
 
 /**
  *
@@ -20,6 +21,18 @@ public class TratarDAO {
         
         sentencia.setString(1, id_vaca);
         
+        sentencia.executeUpdate();
+    }
+
+    public void insertarTratamiento(Connection conn, String idVaca, String idVeterinario, Date fecha, String tratamientos) throws SQLException {
+        String consulta = "INSERT INTO Tratar (ID_vaca, ID_veterinario, fecha, tratamiento) VALUES (?,?,?,?)";
+        PreparedStatement sentencia = conn.prepareStatement(consulta);
+        
+        sentencia.setString(1, idVaca);
+        sentencia.setString(2, idVeterinario);
+        sentencia.setDate(3, new java.sql.Date(fecha.getTime()));
+        sentencia.setString(4, tratamientos);
+     
         sentencia.executeUpdate();
     }
     

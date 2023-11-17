@@ -11,9 +11,11 @@ import modelo.dao.VeterinarioDAO;
 public class MySQLDAOFactory extends DAOFactory {
 
     final static String user = "root";
-    final static String password = "abc123.";
+    //final static String password = "abc123.";
+    final static String password = "root";
     final static String BD = "vacas"; //Indica aqui la BD 
-    final static String IP = "127.0.0.1"; //Indica aqui la IP 
+    //final static String IP = "127.0.0.1"; //Indica aqui la IP 
+    final static String IP = "192.168.56.117";
     final static String url = "jdbc:mysql://" + IP + ":3306/" + BD;
 
     static BasicConnectionPool bcp;

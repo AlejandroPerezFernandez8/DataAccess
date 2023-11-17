@@ -96,6 +96,21 @@ public class VacaDAO {
         
         return sentencia.executeUpdate();
     }
+
+    
+    //--------------------------Tratamientos de la vaca-------------------
+    
+    
+    public void aumentarTratamientos(Connection conn, String idVaca) throws SQLException {
+        String consulta = "update vaca set tratamientos = tratamientos + 1 where id_vaca = ?";
+        PreparedStatement sentencia = conn.prepareStatement(consulta);
+        
+        sentencia.setString(1, idVaca);
+        sentencia.executeUpdate();
+    }
+
+   
+        
     
     
     
