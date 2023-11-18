@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
+import javax.swing.JTextField;
 import modelo.VO.Vaca;
 
 /**
@@ -68,7 +69,11 @@ public class VacaDAO {
         PreparedStatement sentencia = conn.prepareStatement(consulta);
         
         sentencia.setString(1, idVaca);
-        sentencia.setString(2, idMatadero);
+        if (idMatadero == null){
+            sentencia.setNull(2, Types.NULL);
+        }else{
+            sentencia.setString(2, idMatadero);
+        }
         sentencia.setString(3, Raza);
         sentencia.setString(4, Sexo);
         sentencia.setInt(5, Integer.valueOf(Edad));
@@ -120,8 +125,48 @@ public class VacaDAO {
         return sentencia.getInt(1);
     }
 
-   
+    public boolean hasTratamiento(Connection conn, String id_vaca) throws SQLException {
+        String consulta = "select id_vaca from vaca where id_vaca like ? and tratamientos > 0;";
+        PreparedStatement sentencia = conn.prepareStatement(consulta);
         
+        sentencia.setString(1, id_vaca);
+        sentencia.executeQuery();
+        
+        return sentencia.getResultSet().next();
+    }
+
+    public void mostrarDatos(Connection conn,String id_vaca, JTextField txtIdVaca, JTextField txtTratamiento2, JTextField txtMatadero2, JTextField txtNombreVeterinario, JTextField txtApellidoVet) throws SQLException {
+        String consulta = "SELECT " +
+        "v.ID_vaca, " +
+        "m.nombre AS matadero_nombre, " +
+        "t.tratamiento, " +
+        "vet.nombre AS veterinario_nombre, " +
+        "vet.apellidos AS veterinario_apellidos " +
+        "FROM " +
+        "Vaca v " +
+        "JOIN matadero m ON v.ID_matadero = m.ID_matadero " +
+        "LEFT JOIN tratar t ON v.ID_vaca = t.ID_vaca " +
+        "LEFT JOIN Veterinario vet ON t.ID_veterinario = vet.ID_veterinario " +
+        "WHERE v.ID_vaca LIKE ?";
+        
+        PreparedStatement sentencia = conn.prepareStatement(consulta);
+        
+        sentencia.setString(1, id_vaca);
+        ResultSet resultado = sentencia.executeQuery();
+        
+        if (resultado.next()){
+            txtIdVaca.setText(resultado.getString(1));
+            txtMatadero2.setText(resultado.getString(2));
+            txtTratamiento2.setText(resultado.getString(3));
+            txtNombreVeterinario.setText(resultado.getString(4));
+            txtApellidoVet.setText(resultado.getString(5));
+            
+        }
+        
+    }
+    
+    
+    
     
     
     

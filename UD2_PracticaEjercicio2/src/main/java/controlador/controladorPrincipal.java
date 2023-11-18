@@ -9,9 +9,11 @@ import modelo.VO.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Savepoint;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import modelo.dao.*;
 import vista.Principal;
@@ -23,6 +25,7 @@ import vista.Principal;
 public class controladorPrincipal {
     static Principal ventana = new Principal();
     static ModeloTabla modelo = new ModeloTabla();
+    static DefaultComboBoxModel<Vaca> modeloCombo = new DefaultComboBoxModel();
     static DAOFactory mysqlFactory;
     static VacaDAO vaca_dao;
     static MataderoDAO matadero_dao;
@@ -32,6 +35,7 @@ public class controladorPrincipal {
     public static void init(){
         ventana.setLocationRelativeTo(null);
         ventana.getjTable1().setModel(modelo);
+        ventana.getComboVacas().setModel(modeloCombo);
         ventana.setVisible(true);
     }
     
@@ -68,6 +72,25 @@ public class controladorPrincipal {
         }finally{mysqlFactory.releaseConnection(conn);}
         
     }
+    
+    public static void cargarCombo(){
+        Connection conn = null;
+        modeloCombo.removeAllElements();
+        ArrayList<Vaca> vacas = new ArrayList<>();
+        try {
+            conn = mysqlFactory.getConnection();
+            vaca_dao.getVacas(conn,vacas);
+            modeloCombo.addAll(vacas);
+            
+        }catch (SQLException sqlEx){
+            System.out.println(sqlEx.getErrorCode());
+        } catch (Exception e) {
+        }finally{mysqlFactory.releaseConnection(conn);}
+        
+    }
+    
+    
+    
 
     public static void mostrarVaca() {
         Connection conn = null;
@@ -94,26 +117,41 @@ public class controladorPrincipal {
 
     public static void insertarVaca() {
         Connection conn = null;
+        
         try {
             conn = mysqlFactory.getConnection();
-            
+            //HAGO ESTO PARA INSERTAR O NO UN MATADERO
+            if (ventana.getTxtIDVeterinario().getText().isEmpty()){
             vaca_dao.InsertarVaca(
-                    conn,
-                    ventana.getTxtIdVaca().getText(),
-                    ventana.getTxtIdMatadero().getText(),
-                    ventana.getTxtEdad().getText(),
-                    ventana.getTxtRaza().getText(),
-                    ventana.getTxtSexo().getText()
-                    );
-            conn.commit();
+                        conn,
+                        ventana.getTxtIdVaca().getText(),
+                        null,
+                        ventana.getTxtEdad().getText(),
+                        ventana.getTxtRaza().getText(),
+                        ventana.getTxtSexo().getText()
+                        );
+            }else{
+                vaca_dao.InsertarVaca(
+                        conn,
+                        ventana.getTxtIdVaca().getText(),
+                        ventana.getTxtIdMatadero().getText(),
+                        ventana.getTxtEdad().getText(),
+                        ventana.getTxtRaza().getText(),
+                        ventana.getTxtSexo().getText()
+                        );
+            }
+            
+
             JOptionPane.showMessageDialog(ventana, "Vaca insertada");
         }catch (SQLException sqlEx){
             if (sqlEx.getErrorCode() == 1062){JOptionPane.showMessageDialog(ventana, "Error: La vaca ya existe");}
             System.out.println(sqlEx.getErrorCode());
         } catch (Exception e) {
         }finally{
+            try {conn.commit();} catch (SQLException ex) {}
             mysqlFactory.releaseConnection(conn);
             cargarTabla();
+            cargarCombo();
         }
     }
 
@@ -136,7 +174,7 @@ public class controladorPrincipal {
                     ventana.getTxtSexo().getText()
             );
             
-            conn.commit();
+          
             JOptionPane.showMessageDialog(ventana, "Vaca Modificada");
         }catch (SQLException sqlEx){
             if (sqlEx.getErrorCode() == 1062){JOptionPane.showMessageDialog(ventana, "Error: La vaca ya existe");}
@@ -148,8 +186,10 @@ public class controladorPrincipal {
             }
         } catch (Exception e) {
         }finally{
+            try {conn.commit();} catch (SQLException ex) {}
             mysqlFactory.releaseConnection(conn);
             cargarTabla();
+            cargarCombo();
         }
     }
 
@@ -165,7 +205,7 @@ public class controladorPrincipal {
             //AHORA ELIMINAMOS LA VACA
             vacasBorradas = vaca_dao.eliminarVaca(conn,id_vaca);
             
-            conn.commit();
+           
             JOptionPane.showMessageDialog(ventana, vacasBorradas + " Vacas Eliminadas");
         }catch (SQLException sqlEx){
             if (sqlEx.getErrorCode() == 1062){JOptionPane.showMessageDialog(ventana, "Error: La vaca ya existe");}
@@ -177,8 +217,10 @@ public class controladorPrincipal {
             }
         } catch (Exception e) {
         }finally{
+            try {conn.commit();} catch (SQLException ex) {}
             mysqlFactory.releaseConnection(conn);
             cargarTabla();
+            cargarCombo();
         }
     }
     
@@ -217,7 +259,7 @@ public class controladorPrincipal {
             tratar_dao.insertarTratamiento(conn,idVaca,idVeterinario,fecha,tratamientos);
             
             
-            conn.commit();
+            
             JOptionPane.showMessageDialog(ventana,"Vaca tratada correctamente");
         }catch (SQLException sqlEx){
             if (sqlEx.getErrorCode() == 1062){JOptionPane.showMessageDialog(ventana, "Ya existe un tratamiento en la misma fecha");}
@@ -229,10 +271,14 @@ public class controladorPrincipal {
             }
         } catch (Exception e) {
         }finally{
+            try {conn.commit();} catch (SQLException ex) {}
             mysqlFactory.releaseConnection(conn);
         }
     }
 
+    
+    //-------------------CONSULTAS QUE AFECTAN A 4 TABLAS --------------------------
+    
     public static void CantidadVacasSinMataderoConTratamiento() {
         Connection conn = null;
         try {
@@ -240,6 +286,37 @@ public class controladorPrincipal {
  
             int numero = vaca_dao.Procedimiento(conn);
             ventana.getTxtNumeroVacas().setText(numero+"");
+            
+        }catch (SQLException sqlEx){
+            System.out.println(sqlEx.getErrorCode());
+        } catch (Exception e) {
+        }finally{mysqlFactory.releaseConnection(conn);}
+        
+    }
+
+    public static void MostrarDatosVacas() {
+        Connection conn = null;
+        //ASEGURAMOS QUE SE SELECIONE UNA VACA
+        if (ventana.getComboVacas().getSelectedItem() == null){JOptionPane.showMessageDialog(ventana, "Selecciona una vaca");return;}
+        String id_vaca = ventana.getComboVacas().getSelectedItem().toString();
+        try {
+            conn = mysqlFactory.getConnection();
+            //PRIMERO COMPROBAMOS QUE LA VACA TIENE ALGUN TRATAMIENTO
+            if (!vaca_dao.hasTratamiento(conn,id_vaca)){
+                JOptionPane.showMessageDialog(ventana, "La vaca no tiene tratamientos");
+            }
+            //AHORA MOSTRAMOS LOS DATOS
+            vaca_dao.mostrarDatos(conn,id_vaca,
+                    ventana.getTxtIDVaca3(),
+                    ventana.getTxtTratamiento2(),
+                    ventana.getTxtMatadero2(),
+                    ventana.getTxtNombreVeterinario(),
+                    ventana.getTxtApellidoVet()
+            );
+              
+            
+        
+            
             
         }catch (SQLException sqlEx){
             System.out.println(sqlEx.getErrorCode());

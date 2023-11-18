@@ -71,7 +71,7 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="27" max="32767" attributes="0"/>
+              <EmptySpace pref="30" max="32767" attributes="0"/>
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
           </Group>
@@ -404,6 +404,7 @@
                           <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="idVaca" max="32767" attributes="0"/>
                               <Component id="btnMostrarDatos" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtNombreVeterinario" max="32767" attributes="0"/>
                               <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
@@ -413,8 +414,9 @@
                               <Component id="jLabel16" max="32767" attributes="0"/>
                               <Component id="ComboVacas" alignment="0" max="32767" attributes="0"/>
                               <Component id="jLabel14" max="32767" attributes="0"/>
-                              <Component id="txtNombreApellidoVet" alignment="0" pref="162" max="32767" attributes="0"/>
+                              <Component id="txtApellidoVet" alignment="0" pref="162" max="32767" attributes="0"/>
                               <Component id="jLabel19" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtIDVaca3" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -435,11 +437,15 @@
                           <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                           <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="ComboVacas" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="idVaca" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                          <Component id="txtIDVaca3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="txtTratamiento2" min="-2" max="-2" attributes="0"/>
@@ -456,7 +462,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="txtNombreApellidoVet" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtApellidoVet" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                   <Component id="btnMostrarDatos" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
@@ -483,17 +489,9 @@
         </Component>
         <Component class="javax.swing.JComboBox" name="ComboVacas">
           <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-              </StringArray>
-            </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Vaca&gt;"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel14">
@@ -528,13 +526,23 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Mostrar Datos"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMostrarDatosActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel19">
           <Properties>
             <Property name="text" type="java.lang.String" value="Apellido Veterinario:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtNombreApellidoVet">
+        <Component class="javax.swing.JTextField" name="txtApellidoVet">
+        </Component>
+        <Component class="javax.swing.JLabel" name="idVaca">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="ID Vaca:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtIDVaca3">
         </Component>
       </SubComponents>
     </Container>

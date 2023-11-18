@@ -51,7 +51,7 @@ public class Vaca {
 
     @Override
     public String toString() {
-        return "Vaca{" + "ID_vaca=" + ID_vaca + ", ID_matadero=" + ID_matadero + ", raza=" + raza + ", sexo=" + sexo + ", edad=" + edad + ", tratamientos=" + tratamientos + '}';
+        return ID_vaca;
     }
     
     

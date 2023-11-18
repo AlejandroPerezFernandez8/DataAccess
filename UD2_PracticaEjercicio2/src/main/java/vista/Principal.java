@@ -9,7 +9,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import controlador.*;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JTextArea;
+import modelo.VO.Vaca;
 /**
  *
  * @author AD
@@ -79,7 +81,9 @@ public class Principal extends javax.swing.JFrame {
         txtNombreVeterinario = new javax.swing.JTextField();
         btnMostrarDatos = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
-        txtNombreApellidoVet = new javax.swing.JTextField();
+        txtApellidoVet = new javax.swing.JTextField();
+        idVaca = new javax.swing.JLabel();
+        txtIDVaca3 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gestion de vacas");
@@ -241,8 +245,6 @@ public class Principal extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel13.setText("Mostrando el matadero el veterinario y los detalles del tratamiento.");
 
-        ComboVacas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel14.setText("Vaca :");
 
         jLabel15.setText("Matadero :");
@@ -252,8 +254,15 @@ public class Principal extends javax.swing.JFrame {
         jLabel18.setText("Nombre Veterinario :");
 
         btnMostrarDatos.setText("Mostrar Datos");
+        btnMostrarDatos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMostrarDatosActionPerformed(evt);
+            }
+        });
 
         jLabel19.setText("Apellido Veterinario:");
+
+        idVaca.setText("ID Vaca:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -269,6 +278,7 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(jLabel17)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(idVaca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnMostrarDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtNombreVeterinario)
                             .addComponent(jLabel18)
@@ -278,8 +288,9 @@ public class Principal extends javax.swing.JFrame {
                             .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(ComboVacas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtNombreApellidoVet, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
-                            .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtApellidoVet, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
+                            .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtIDVaca3))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -294,11 +305,15 @@ public class Principal extends javax.swing.JFrame {
                         .addGap(207, 207, 207)
                         .addComponent(jLabel17))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(82, 82, 82)
+                        .addGap(35, 35, 35)
                         .addComponent(jLabel14)
                         .addGap(18, 18, 18)
                         .addComponent(ComboVacas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
+                        .addComponent(idVaca)
+                        .addGap(3, 3, 3)
+                        .addComponent(txtIDVaca3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel16)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtTratamiento2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -313,7 +328,7 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel19)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtNombreApellidoVet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtApellidoVet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14)
                 .addComponent(btnMostrarDatos)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -358,7 +373,7 @@ public class Principal extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(292, 292, 292)
                                 .addComponent(btnCargar, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21))
         );
@@ -426,6 +441,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         controladorPrincipal.cargarTabla();
+        controladorPrincipal.cargarCombo();
     }//GEN-LAST:event_formWindowOpened
 
     private void txtIdVacaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtIdVacaFocusLost
@@ -453,6 +469,11 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         controladorPrincipal.CantidadVacasSinMataderoConTratamiento();
     }//GEN-LAST:event_btnActualizarDatosActionPerformed
+
+    private void btnMostrarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarDatosActionPerformed
+        // TODO add your handling code here:
+        controladorPrincipal.MostrarDatosVacas();
+    }//GEN-LAST:event_btnMostrarDatosActionPerformed
 
     public JTable getjTable1() {
         return jTable1;
@@ -520,12 +541,40 @@ public class Principal extends javax.swing.JFrame {
         return txtTratamiento;
     }
 
+    public JComboBox<Vaca> getComboVacas() {
+        return ComboVacas;
+    }
+
+    public JTextField getTxtMatadero2() {
+        return txtMatadero2;
+    }
+
+    public JTextField getTxtApellidoVet() {
+        return txtApellidoVet;
+    }
+
+    public JTextField getTxtNombreVeterinario() {
+        return txtNombreVeterinario;
+    }
+
+    public JTextField getTxtTratamiento2() {
+        return txtTratamiento2;
+    }
+
+    public JTextField getTxtIDVaca3() {
+        return txtIDVaca3;
+    }
+
+    public JButton getBtnMostrarDatos() {
+        return btnMostrarDatos;
+    }
+
  
 
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> ComboVacas;
+    private javax.swing.JComboBox<Vaca> ComboVacas;
     private javax.swing.JButton btnActualizarDatos;
     private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnCargar;
@@ -533,6 +582,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnMostrarDatos;
     private javax.swing.JButton btnRealizartratamiento;
+    private javax.swing.JLabel idVaca;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -558,13 +608,14 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField txtApellidoVet;
     private javax.swing.JTextField txtEdad;
+    private javax.swing.JTextField txtIDVaca3;
     private javax.swing.JTextField txtIDVacaTratamientos;
     private javax.swing.JTextField txtIDVeterinario;
     private javax.swing.JTextField txtIdMatadero;
     private javax.swing.JTextField txtIdVaca;
     private javax.swing.JTextField txtMatadero2;
-    private javax.swing.JTextField txtNombreApellidoVet;
     private javax.swing.JTextField txtNombreVeterinario;
     private javax.swing.JTextField txtNumeroVacas;
     private javax.swing.JTextField txtRaza;
