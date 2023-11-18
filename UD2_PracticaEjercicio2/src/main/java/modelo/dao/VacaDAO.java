@@ -144,10 +144,10 @@ public class VacaDAO {
         "vet.apellidos AS veterinario_apellidos " +
         "FROM " +
         "Vaca v " +
-        "JOIN matadero m ON v.ID_matadero = m.ID_matadero " +
+        "LEFT JOIN matadero m ON v.ID_matadero = m.ID_matadero " +
         "LEFT JOIN tratar t ON v.ID_vaca = t.ID_vaca " +
         "LEFT JOIN Veterinario vet ON t.ID_veterinario = vet.ID_veterinario " +
-        "WHERE v.ID_vaca LIKE ?";
+        "WHERE v.ID_vaca = ?";
         
         PreparedStatement sentencia = conn.prepareStatement(consulta);
         

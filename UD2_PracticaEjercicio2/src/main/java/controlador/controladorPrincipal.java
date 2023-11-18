@@ -121,7 +121,7 @@ public class controladorPrincipal {
         try {
             conn = mysqlFactory.getConnection();
             //HAGO ESTO PARA INSERTAR O NO UN MATADERO
-            if (ventana.getTxtIDVeterinario().getText().isEmpty()){
+            if (ventana.getTxtIdMatadero().getText().isEmpty()){
             vaca_dao.InsertarVaca(
                         conn,
                         ventana.getTxtIdVaca().getText(),
@@ -301,9 +301,16 @@ public class controladorPrincipal {
         String id_vaca = ventana.getComboVacas().getSelectedItem().toString();
         try {
             conn = mysqlFactory.getConnection();
+            //LIMPIAMOS
+            ventana.getTxtIDVaca3().setText("");
+            ventana.getTxtTratamiento2().setText("");
+            ventana.getTxtMatadero2().setText("");
+            ventana.getTxtNombreVeterinario().setText("");
+            ventana.getTxtApellidoVet().setText("");
             //PRIMERO COMPROBAMOS QUE LA VACA TIENE ALGUN TRATAMIENTO
             if (!vaca_dao.hasTratamiento(conn,id_vaca)){
                 JOptionPane.showMessageDialog(ventana, "La vaca no tiene tratamientos");
+                return;
             }
             //AHORA MOSTRAMOS LOS DATOS
             vaca_dao.mostrarDatos(conn,id_vaca,
@@ -313,11 +320,6 @@ public class controladorPrincipal {
                     ventana.getTxtNombreVeterinario(),
                     ventana.getTxtApellidoVet()
             );
-              
-            
-        
-            
-            
         }catch (SQLException sqlEx){
             System.out.println(sqlEx.getErrorCode());
         } catch (Exception e) {

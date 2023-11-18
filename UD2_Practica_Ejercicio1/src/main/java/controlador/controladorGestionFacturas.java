@@ -140,7 +140,7 @@ public class controladorGestionFacturas {
                 );
             }
         
-            conn.commit();
+            
             JOptionPane.showMessageDialog(ventana, "Factura Creada");
             limpiarFormulario();
         }catch (SQLException sqlEX){
@@ -157,6 +157,7 @@ public class controladorGestionFacturas {
         } catch (Exception e) {
             System.out.println("Excepcion");
         }finally{
+            try {conn.commit();} catch (SQLException ex) {}
             mySQLFactory.releaseConnection(conn);
             cargarComboProductos();
         }

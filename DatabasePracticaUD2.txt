@@ -21,7 +21,7 @@ create table empleado (
   idempleado varchar(10) not null primary key,
   nombreemp varchar(20),
   salario float(6,2),
-  incentivo float(6,2),
+  incentivo float(6,2) default 0.00,
   operativas int
 );
 
@@ -69,8 +69,8 @@ insert into cliente values ('C001','José','Alvariza','C/Ourense , 3 4ºD'),
 ('C003','Tania','Pedrosa','C/Pontevedra , 5 bajo');
 
 insert into empleado values ('E001','Jupiter',1000.0,0.491,3),
-('E002','Saturno',800.0,null,0),
-('E003','Marte',1200.0,null,0);
+('E002','Saturno',800.0,0,0),
+('E003','Marte',1200.0,0,0);
 
 
 /* 14.5, 23,5, 11,1 */

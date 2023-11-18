@@ -151,7 +151,7 @@ public class controladorGestionClientes {
             //BORRAMOS EL CLIENTE
             JOptionPane.showMessageDialog(ventana, cliente_dao.eliminarCliente(conn,ventana.getTxt_idCliente().getText())+" Cliente borrado");
             
-            conn.commit();
+            
         }catch (SQLException sqlEX){
             System.out.println(sqlEX.getErrorCode());
             if(sqlEX.getErrorCode() == 1062){JOptionPane.showMessageDialog(ventana, "El cliente no se puede eliminar, ya existe en nuestros historicos");}
@@ -161,7 +161,10 @@ public class controladorGestionClientes {
                 Logger.getLogger(controladorGestionClientes.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (Exception e) {
-        }finally{mysqlFactory.releaseConnection(conn);}
+        }finally{
+            try {conn.commit();} catch (SQLException ex) {}
+            mysqlFactory.releaseConnection(conn);
+        }
         
     }
     
@@ -231,8 +234,6 @@ public class controladorGestionClientes {
             idFactura = String.valueOf(ventana.getjTable1().getValueAt(ventana.getjTable1().getSelectedRow(), 0));
             JOptionPane.showMessageDialog(ventana,factura_dao.cobrarFactura(conn,idFactura) + " Facturas han sido cobradas");  
             
-            
-            conn.commit();
         }catch(SQLException sqlEX){
             try {
                 conn.rollback();
@@ -241,6 +242,7 @@ public class controladorGestionClientes {
             }
         } catch (Exception e) {
         }finally{
+            try {conn.commit();} catch (SQLException ex) {}
             mysqlFactory.releaseConnection(conn);
             cargarTabla();
         }
@@ -261,7 +263,6 @@ public class controladorGestionClientes {
                     ventana.getTxtApellido().getText(),
                     ventana.getTxtDireccion().getText()
                     );
-            conn.commit();
             JOptionPane.showMessageDialog(ventana,registros + " Clientes creados");
         }catch (SQLException sqlex){
             
@@ -270,7 +271,10 @@ public class controladorGestionClientes {
             }
             try {conn.rollback();} catch (SQLException ex) {System.out.println("Error durante el rolback");}
         } catch (Exception e) {
-        }finally{mysqlFactory.releaseConnection(conn);}
+        }finally{
+            try {conn.commit();} catch (SQLException ex) {}
+            mysqlFactory.releaseConnection(conn);
+        }
     }
     
     
