@@ -1,0 +1,47 @@
+DROP DATABASE IF EXISTS taller;
+create schema taller;
+
+Use taller;
+
+create table empleado (
+  codemp int primary key,
+  nomemp varchar(20) not null unique,
+  salario float (7,2)
+);
+
+create table cliente (
+    codcli int not null primary key,
+    nomcli varchar(20) not null unique,
+    direccion varchar (40) not null,
+    email varchar (30),
+    tfno  varchar(12)
+);
+
+create table coche (
+  matricula varchar(7) primary key,
+  marca varchar(70) not null,
+  modelo varchar(20) not null,
+  codcli int not null,
+  constraint `fk_cli` FOREIGN KEY (`codcli`)  REFERENCES `taller`.`cliente` (`codcli` )
+);
+
+
+Create table reparacion (
+    codemp int not null,
+    matricula varchar(7) not null,
+    importe double(7,2),
+    fechai datetime,
+    fechaf datetime,
+    primary key (codemp,matricula,fechai),
+	constraint `fk_emp` FOREIGN KEY (`codemp`)  REFERENCES `taller`.`empleado` (`codemp` ),
+    constraint `fk_coche` FOREIGN KEY (`matricula`) REFERENCES `taller`.`coche` (`matricula`)
+);
+
+Create table bonificacion (
+  codemp int,
+  mes char(2),
+  importebonificado float (6,2),
+  primary key (codemp,mes),
+  constraint `fk_codemp` FOREIGN KEY (`codemp`) REFERENCES `taller`.`empleado` (`codemp`)
+  
+)
