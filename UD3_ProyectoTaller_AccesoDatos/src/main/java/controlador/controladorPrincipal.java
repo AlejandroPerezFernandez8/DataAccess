@@ -18,11 +18,8 @@ import modelo.vo.*;
 public class controladorPrincipal {
     static VistaPrincipal ventana = new VistaPrincipal();
     static Session session;
-    static BonificacionDAO bonificacion_dao;
     static ClienteDAO cliente_dao;
     static CocheDAO coche_dao;
-    static EmpleadoDAO empleado_dao;
-    static ReparacionDAO reparacion_dao;
     
     public static void init() {
         ventana.setLocationRelativeTo(null);
@@ -31,11 +28,8 @@ public class controladorPrincipal {
     
     public static void IniciarSession(){
         session = HibernateUtil.getSessionFactory().openSession();
-        bonificacion_dao = HibernateUtil.getBonificacionDAO();
         cliente_dao = HibernateUtil.getClienteDAO();
         coche_dao = HibernateUtil.getCocheDAO();
-        empleado_dao = HibernateUtil.getEmpleadoDAO();
-        reparacion_dao = HibernateUtil.getReparacionDAO();
     }
     
     public static void CerrarSession(){
@@ -142,6 +136,32 @@ public class controladorPrincipal {
            
             cliente_dao.eliminar(session,c);
             JOptionPane.showMessageDialog(ventana,"Cliente eliminado");
+        } catch (Exception e) {
+        }finally{HibernateUtil.commitTx(session);}
+    }
+
+    public static void insertarCoche() {
+        try {
+            HibernateUtil.beginTx(session);
+            Cliente cliente;
+            //Comprobamos que rellene todos los datos;
+            if (txtEmpty(ventana.getTxtMarca())||txtEmpty(ventana.getTxtMatricula())||txtEmpty(ventana.getTxtModelo())||txtEmpty(ventana.getTxtCodClienteCoche())){
+                JOptionPane.showMessageDialog(ventana, "Rellene todos los datos por favor");
+            }
+            //Comprobamos que exista el coche y el cliente
+            if ((cliente = cliente_dao.getCliente(session,ventana.getTxtCodClienteCoche().getText())) == null){
+                JOptionPane.showMessageDialog(ventana,"El cliente no existe");
+                return;
+            }
+            if (coche_dao.getCoche(session,ventana.getTxtMatricula().getText()) != null){
+                JOptionPane.showMessageDialog(ventana,"El coche ya existe");
+                return;
+            }
+            
+            //INSERTAMOS EL NUEVO COCHE
+            Coche c = new Coche(ventana.getTxtMatricula().getText(),ventana.getTxtMarca().getText(),ventana.getTxtModelo().getText(),cliente);
+            coche_dao.insertar(session,c);
+            JOptionPane.showMessageDialog(ventana,"Coche insertado");
         } catch (Exception e) {
         }finally{HibernateUtil.commitTx(session);}
     }

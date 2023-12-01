@@ -39,27 +39,16 @@ public class ClienteDAO {
     }
 
     public boolean CochesReparandose(Session session, String id) {
-        String consulta = "from Cliente c inner join c.cocheList cl";
+        String consulta = "from Coche co inner join co.reparacionList where co.cliente.id = :id";
         Query q = session.createQuery(consulta);
-
+        q.setParameter("id", id);
         Iterator it = q.list().iterator();
         
-        if (it.hasNext()) {   
-            Object[] o = (Object[]) it.next();
-            Coche c = (Coche)o[1];
-            String matricula = c.getMatricula();
-            String consulta2 = "from Reparacion r where r.reparacionPK.matricula =:matricula and fechaf is null";
-            Query q2 = session.createQuery(consulta2);
-            q2.setParameter("matricula",matricula);
-            Iterator it2 = q2.list().iterator();
-            while (it2.hasNext()) {                
-                Reparacion r = (Reparacion)it2.next();
-                if (r != null){return true;}
-                System.out.println(r.toString());
-            }
-            
-            
-        }            
+        while (it.hasNext()) {            
+            Object[] res = (Object[]) it.next();
+            Reparacion r = (Reparacion)res[1];
+            if (r.getFechaf() == null){return true;}
+        }
         return false;
     }
 

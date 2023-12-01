@@ -11,8 +11,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -45,12 +43,10 @@ public class Reparacion implements Serializable {
     public Reparacion() {
     }
 
-    public Reparacion(ReparacionPK reparacionPK, Double importe, Date fechaf, Coche coche, Empleado empleado) {
+    public Reparacion(ReparacionPK reparacionPK, Double importe, Date fechaf) {
         this.reparacionPK = reparacionPK;
         this.importe = importe;
         this.fechaf = fechaf;
-        this.coche = coche;
-        this.empleado = empleado;
     }
 
     

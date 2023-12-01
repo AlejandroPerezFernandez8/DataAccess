@@ -48,12 +48,11 @@ public class Coche implements Serializable {
     public Coche() {
     }
 
-    public Coche(String matricula, String marca, String modelo, Cliente cliente, List<Reparacion> reparacionCollection) {
+    public Coche(String matricula, String marca, String modelo, Cliente cliente) {
         this.matricula = matricula;
         this.marca = marca;
         this.modelo = modelo;
         this.cliente = cliente;
-        this.reparacionList = reparacionCollection;
     }
 
     
