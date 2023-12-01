@@ -7,6 +7,7 @@ package controlador;
 import org.hibernate.Session;
 import vista.VistaPrincipal;
 import controlador.factory.HibernateUtil;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import modelo.dao.*;
@@ -162,6 +163,15 @@ public class controladorPrincipal {
             Coche c = new Coche(ventana.getTxtMatricula().getText(),ventana.getTxtMarca().getText(),ventana.getTxtModelo().getText(),cliente);
             coche_dao.insertar(session,c);
             JOptionPane.showMessageDialog(ventana,"Coche insertado");
+        } catch (Exception e) {
+        }finally{HibernateUtil.commitTx(session);}
+    }
+
+    public static void cargarTabla() {
+        try {
+            HibernateUtil.beginTx(session);
+            cliente_dao.getDatos(session,ventana.getjTable1());
+            System.out.println("FIN");
         } catch (Exception e) {
         }finally{HibernateUtil.commitTx(session);}
     }

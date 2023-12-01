@@ -4,7 +4,9 @@
  */
 package modelo.dao;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import javax.swing.JTable;
 
 import modelo.vo.Cliente;
 import modelo.vo.Coche;
@@ -54,6 +56,30 @@ public class ClienteDAO {
 
     public void eliminar(Session session, Cliente c) {
        session.delete(c);
+    }
+
+    public void getDatos(Session session, JTable jTable1) {
+        String consulta = "select c.id,c.nomcli,co.matricula,co.marca,co.modelo from Cliente c inner join c.cocheList co";
+        Query q = session.createQuery(consulta);
+        Iterator it = q.list().iterator();
+        
+        while (it.hasNext()) {            
+            String[] datos = (String[]) it.next();
+            
+            for (int i = 0; i < datos.length; i++) {
+                System.out.println(datos[i]);
+            }
+            
+            jTable1.setValueAt(datos[0], jTable1.getRowCount(), 1);
+            jTable1.setValueAt(datos[1], jTable1.getRowCount(), 2);
+            jTable1.setValueAt(datos[2], jTable1.getRowCount(), 3); 
+            jTable1.setValueAt(datos[3], jTable1.getRowCount(), 4); 
+            jTable1.setValueAt(datos[4], jTable1.getRowCount(), 5); 
+        }
+        
+        
+        
+        
     }
     
     
